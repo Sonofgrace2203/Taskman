@@ -34,5 +34,11 @@
 }
 
 input:focus {
+    outline: none;
+    padding: 5px;
     border: none;
+    border-bottom: 2px solid purple;
+    font-size: 10px;
+    background: none;
+    box-shadow: none;
 }

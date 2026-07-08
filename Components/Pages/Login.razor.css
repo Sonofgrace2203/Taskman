@@ -6,8 +6,8 @@
     flex-direction: column;
     background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(158, 158, 158, 0.6)),
         url('loginbg.webp');
-        background-repeat: no-repeat;
-        background-size: cover;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 div .sub-container {
@@ -55,8 +55,15 @@ div input {
 }
 
 input:focus {
+    outline: none;
+    padding: 5px;
     border: none;
+    border-bottom: 2px solid purple;
+    font-size: 10px;
+    background: none;
+    box-shadow: none;
 }
+
 
 label {
     font-size: 15px;
