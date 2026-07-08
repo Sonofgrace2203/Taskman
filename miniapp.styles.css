@@ -113,8 +113,12 @@ div input[b-0ww7vns9iz] {
     background: none;
 }
 
-input:focus[b-0ww7vns9iz] {
+div input:focus[b-0ww7vns9iz] {
+    padding: 5px;
     border: none;
+    border-bottom: 2px solid purple;
+    font-size: 10px;
+    background: none;
 }
 
 label[b-0ww7vns9iz] {
