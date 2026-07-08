@@ -98,7 +98,9 @@
                     @if (confirmClear)
                     {
                         <div style="display: flex; gap:10px;">
-                            <ButtonCard BgColor="rgb(140, 0, 140, 0.3)" BtnText="✅ Clear" OnClick="ClearTask" />
+                            <div class="mgb-2">
+                                <ButtonCard BgColor="rgb(140, 0, 140, 0.3)" BtnText="✅ Clear" OnClick="ClearTask" />
+                            </div>
                             <ButtonCard BgColor="rgb(126, 126, 126, 0.3)" BtnText="❌ Cancel" OnClick="() => confirmClear = false" />
                         </div>
                     }
