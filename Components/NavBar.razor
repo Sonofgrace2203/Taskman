@@ -3,17 +3,17 @@
 
 <nav style="display: flex; justify-content: space-around; margin-bottom: 20px;">
     <div class="mobile">
-        <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/dashboard"
+        <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="dashboard"
                  Match="NavLinkMatch.All">🏠 Home</NavLink>
     </div>
     @if (Auth.Role == "Admin")
     {
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/tasks"
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="tasks"
                      Match="NavLinkMatch.All">📝 Tasks</NavLink>
         </div>
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/profile"
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="profile"
                      Match="NavLinkMatch.All">👤 Profile</NavLink>
         </div>
     }
@@ -22,7 +22,7 @@
     @if (Auth.IsLoggedIn)
     {
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/"
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/Taskman"
                      @onclick="LogoutUser" Match="NavLinkMatch.All">
                 <ButtonCard BgColor="white" BtnText="⌫ Logout" OnClick="LogoutUser" />
             </NavLink>
@@ -31,7 +31,7 @@
     else
     {
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/"
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/Taskman"
                      @onclick="LogoutUser" Match="NavLinkMatch.All">
                 <ButtonCard BgColor="white" BtnText="🚪 Login" OnClick="LoginUser" />
             </NavLink>
@@ -42,12 +42,12 @@
 @code {
     private void LoginUser()
     {
-        Nav.NavigateTo("/");
+        Nav.NavigateTo("/Taskman");
     }
 
     private void LogoutUser()
     {
         Auth.Logout();
-        Nav.NavigateTo("/");
+        Nav.NavigateTo("/Taskman");
     }
 }

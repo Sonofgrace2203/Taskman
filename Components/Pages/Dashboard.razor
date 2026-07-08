@@ -59,9 +59,9 @@ else
     private string completedCount => tasks.Count(t => t.IsComplete).ToString();
     private string pendingCount => tasks.Count(t => !t.IsComplete).ToString();
 
-    private void GoToTask() => Nav.NavigateTo("/tasks");
+    private void GoToTask() => Nav.NavigateTo("tasks");
 
-    private void ViewProfile() => Nav.NavigateTo("/profile");
+    private void ViewProfile() => Nav.NavigateTo("profile");
 
     protected override async Task OnInitializedAsync()
     {
