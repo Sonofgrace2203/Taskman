@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ] # Change to master if your default branch uses that name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.x' # Match your current .NET framework version
+
+    - name: Publish App
+      run: dotnet publish -c Release -o release
+
+    # Changes the base path dynamically if you didn't hardcode it in Step 1
+    - name: Rewrite base href
+      uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
+      with:
+        html_path: release/wwwroot/index.html
+        base_href: /${{ github.event.repository.name }}/
+
+    # Duplicate index.html to 404.html for routing fallback
+    - name: Copy index to 404
+      run: cp release/wwwroot/index.html release/wwwroot/404.html
+
+    - name: Add .nojekyll file
+      run: touch release/wwwroot/.nojekyll
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages # The branch the action will deploy compiled files to
+        folder: release/wwwroot # The target directory from publish output

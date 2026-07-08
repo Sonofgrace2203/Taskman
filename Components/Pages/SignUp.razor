@@ -1,0 +1,150 @@
+@page "/signup"
+@inject miniapp.Services.AuthService Auth
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+@using System.Text.Json
+
+@if (isLoading)
+{
+    <p>⏳ Loading...</p>
+}
+else
+{
+    <div class="login-container">
+        <h3>Sign Up</h3>
+        <div class="sub-container">
+            <div class="input-container">
+                <label for="username">Firstname</label>
+                <input type="text" placeholder="enter firstname..." @bind="firstname" />
+            </div>
+
+            <div class="input-container">
+                <label for="username">Lastname</label>
+                <input type="text" placeholder="enter lastname..." @bind="lastname" />
+            </div>
+
+            <div class="input-container">
+                <label for="username">Email</label>
+                <input type="email" placeholder="enter email..." @bind="email" />
+            </div>
+
+            <div class="input-container">
+                <label for="username">Username</label>
+                <input type="text" placeholder="enter username..." @bind="username" />
+            </div>
+
+            <div class="input-container">
+                <label for="username">Date of Birth</label>
+                <input type="date" placeholder="enter password..." @bind="dateOfBirth" />
+            </div>
+
+            <div class="input-container">
+                <label for="username">Role</label>
+                <select name="" id="" @bind="role">
+                    <option value="Admin">Admin</option>
+                    <option value="User">User</option>
+                </select>
+            </div>
+
+            <div class="input-container">
+                <label for="username">Password</label>
+                <input type="password" placeholder="enter password..." @bind="password" />
+            </div>
+
+            <div class="input-container">
+                <label for="username">Confirm password</label>
+                <input type="password" placeholder="enter password..." @bind="confirmPassword" />
+            </div>
+
+            <div class="input-container">
+                <button @onclick="SignupUser">Sign Up</button>
+            </div>
+
+            @if (!Auth.IsLoggedIn)
+            {
+                <p>@errorMessage</p>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private string firstname = "";
+    private string lastname = "";
+    private string email = "";
+    private string role = "";
+    private DateTime? dateOfBirth;
+    private string username = "";
+    private string password = "";
+    private string confirmPassword = "";
+    private string errorMessage = "";
+    private bool isLoading = true;
+
+    public List<UserModel> users = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        await Task.Delay(1000);
+        isLoading = false;
+    }
+
+    protected override void OnInitialized()
+    {
+        if (Auth.IsLoggedIn)
+        {
+            Nav.NavigateTo("/dashboard");
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadUsers();
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadUsers()
+    {
+        await Auth.LoadUsers();
+    }
+
+    private async Task SignupUser()
+    {
+        var user = Auth.SignUp(firstname, lastname, email, role, dateOfBirth, username, password, confirmPassword);
+
+        bool success = true;
+
+        var newUser = new UserModel
+        {
+            FirstName = firstname,
+            LastName = lastname,
+            Email = email,
+            DateOfBirth = dateOfBirth,
+            Username = username,
+            Password = password,
+            Role = role
+        };
+
+        users.Add(newUser);
+        await SaveUser();
+        await LoadUsers();
+
+        if (success)
+        {
+            Nav.NavigateTo("/signupsuccess");
+        }
+        else
+        {
+            errorMessage = "⚠️ User already exist.";
+        }
+    }
+
+    private async Task SaveUser()
+    {
+        await Auth.SaveUser();
+    }
+}

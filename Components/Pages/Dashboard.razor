@@ -1,0 +1,84 @@
+@page "/dashboard"
+@using miniapp.Components
+@inject miniapp.Services.AuthService Auth
+@inject ITaskService TaskService
+@inject NavigationManager Nav
+
+<NavBar />
+
+@if (isLoading)
+{
+    <LoadingCardMajor LoadingState="⏳ Loading Dashboard..." />
+}
+else
+{
+    <div>
+        <h3>📊 Dashboard</h3>
+        <p>Welcome back, @Auth.Username 🖐️</p>
+
+        @if (Auth.IsLoggedIn)
+        {
+            <div style="display: flex; gap: 10px; padding: 10px 0 30px;">
+                <StatCard Icon="📝" Label="Total" Value="@tasksCount" />
+                <StatCard Icon="✅" Label="Done" Value="@completedCount" />
+                <StatCard Icon="⏳" Label="Left" Value="@pendingCount" />
+            </div>
+        }
+        else
+        {
+            <div style="display: flex; gap: 10px; padding: 10px 0 30px;">
+                <StatCard Icon="📝" Label="Total" Value="0" />
+                <StatCard Icon="✅" Label="Done" Value="0" />
+                <StatCard Icon="⏳" Label="Left" Value="0" />
+            </div>
+        }
+
+        @if (Auth.Role == "Admin")
+        {
+            <div>
+                <h5>⚙️ Admin Panel</h5>
+                <div>
+                    <ButtonCard BgColor="rgb(140, 0, 140, 0.3)" BtnText="📁 Go to Tasks" OnClick="GoToTask" />
+                    <ButtonCard BgColor="rgb(135, 135, 135, 0.3)" BtnText="🙎‍♂️ View Profile" OnClick="ViewProfile" />
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Auth.IsLoggedIn)
+    {
+        <NotLoginCard Title="User not logged in...." SubTitle="Click to login..." />
+    }
+}
+
+@code {
+    private bool isLoading = true;
+
+    private List<AppTask> tasks => TaskService.GetAll() ?? new List<AppTask>();
+    private string tasksCount => tasks.Count.ToString();
+    private string completedCount => tasks.Count(t => t.IsComplete).ToString();
+    private string pendingCount => tasks.Count(t => !t.IsComplete).ToString();
+
+    private void GoToTask() => Nav.NavigateTo("/tasks");
+
+    private void ViewProfile() => Nav.NavigateTo("/profile");
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (isLoading)
+        {
+            isLoading = true;
+            await Task.Delay(1500);
+            isLoading = false;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await TaskService.LoadTasks();
+            StateHasChanged();
+        }
+    }
+}

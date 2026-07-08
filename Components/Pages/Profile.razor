@@ -1,0 +1,185 @@
+@page "/profile"
+@using miniapp.Components
+@inject miniapp.Services.AuthService Auth
+@inject ITaskService TaskService
+@inject NavigationManager Nav
+
+
+
+<NavBar />
+
+@if (isLoading)
+{
+    if (Auth.Role == "Admin")
+    {
+        <LoadingCardMajor LoadingState="⏳ Loading Admin profile..." />
+    }
+    else if (Auth.Role == "User")
+    {
+        <LoadingCardMajor LoadingState="⏳ Loading User profile..." />
+    }
+    else
+    {
+        <LoadingCardMajor LoadingState="⏳ Loading profile..." />
+    }
+}
+else
+{
+
+    <h3>👤 My Profile</h3>
+
+    <div style="background: rgb(255, 166, 0, 0.2); padding: 20px 40px; font-size: 20px; margin-top: 30px; flex-wrap: wrap;">
+        <div
+            style="background: rgb(255, 166, 0, 0.2); padding: 20px 40px; font-size: 20px; display: flex; justify-content: space-between; margin-top: 30px; flex-wrap: wrap;">
+            <p>
+                <b style="color: purple;">🙎‍♂️ Fullname:</b>
+                @fullName
+            </p>
+            <p>
+                <b style="color: purple;">👦 Username:</b>
+                @Auth.Username
+            </p>
+            <p>
+                <b style="color: purple; margin-right: 4px;">📅 Member since:</b>
+                @if (Auth.IsLoggedIn)
+                {
+                    @DateTime.Now.ToString("MMM yyyy")
+                }
+            </p>
+        </div>
+        <div
+            style="background: rgb(255, 166, 0, 0.2); padding: 20px 40px; font-size: 20px; display: flex; justify-content: space-between; margin-top: 30px; flex-wrap: wrap;">
+            <p>
+                <b style="color: purple;">🏷️ Role:</b>
+                @Auth.Role
+            </p>
+            <p>
+                <b style="color: purple;">📅 Date of Birth:</b>
+                @Auth.DateOfBirth
+            </p>
+            <p>
+                <b style="color: purple; margin-right: 4px;">📧 Email:</b>
+                @Auth.Email
+            </p>
+        </div>
+    </div>
+
+    @if (!Auth.IsLoggedIn)
+    {
+        <NotLoginCard Title="User not logged in..." SubTitle="Click to log in..." />
+    }
+    else
+    {
+        <div style="background: rgb(133, 133, 133, 0.2); padding: 20px 40px; font-size: 20px; margin: 30px 0;">
+            <h5>📊 My Stats</h5>
+            <div
+                style="background: rgb(133, 133, 133, 0.2); padding: 20px 40px; font-size: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 30px;">
+                <p>
+                    <b style="margin-right: 20px">✅ Completed: </b>
+                    <i style="font-size: 30px; color: purple; font-weight: bold;">@completedCount</i>
+                </p>
+                <p>
+                    <b style="margin-right: 20px">⏳ Pending: </b>
+                    <i style="font-size: 30px; color: purple; font-weight: bold;">@pendingCount</i>
+                </p>
+                <p>
+                    <b style="margin-right: 20px">📝 Total: </b>
+                    <i style="font-size: 30px; color: purple; font-weight: bold;">@tasksCount</i>
+                </p>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            <div style="margin-bottom: 10px;">
+                <div style="margin-bottom: 10px;">
+                    <ButtonCard BgColor="rgb(140, 0, 140, 0.3)" BtnText="⬅ Back To DashBoard" OnClick="BackToDashboard" />
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <ButtonCard BgColor="rgb(135, 135, 135, 0.3)" BtnText="🚪 Logout" OnClick="Logout" />
+                </div>
+            </div>
+            @if (confirmAccountDelete == false)
+            {
+                <div style="display: flex; gap:10px;">
+                    <div style="margin-bottom: 10px;">
+                        <ButtonCard BgColor="rgba(255, 0, 0, 0.3)" BtnText="✅ Confirm" OnClick="DeleteUserAccount" />
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <ButtonCard BgColor="rgb(126, 126, 126, 0.3)" BtnText="❌ Cancel"
+                                    OnClick="() => confirmAccountDelete = true" />
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="margin-bottom: 10px;">
+                    <ButtonCard BgColor="rgba(255, 0, 0, 0.3)" BtnText="🗑️ Delete Account"
+                                OnClick="() => confirmAccountDelete = false" />
+                </div>
+            }
+        </div>
+    }
+
+
+
+@code {
+    private bool isLoading { get; set; }
+    private List<AppTask> tasks => TaskService.GetAll() ?? new List<AppTask>();
+    private string tasksCount => tasks.Count.ToString();
+
+    // Replace 'IsCompleted' with the exact property name inside your AppTask model:
+    private string completedCount => tasks.Count(t => t.IsComplete).ToString();
+    private string pendingCount => tasks.Count(t => !t.IsComplete).ToString();
+
+
+
+    private string fullName => $"{Auth.Lastname} {Auth.Firstname}";
+
+    private bool confirmAccountDelete = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        await Task.Delay(2000);
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    private void BackToDashboard()
+    {
+        Nav.NavigateTo("/dashboard");
+        StateHasChanged();
+    }
+
+    private async Task DeleteUserAccount()
+    {
+        await Auth.DeleteAccount();
+        StateHasChanged();
+    }
+
+    private void Logout()
+    {
+        Nav.NavigateTo("/");
+        Auth.Logout();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Auth.LoadUsers();
+            await TaskService.LoadTasks();
+            StateHasChanged();
+        }
+    }
+}
+
+}
+
+
+
+
+
+
+
+

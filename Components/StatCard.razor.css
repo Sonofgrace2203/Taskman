@@ -1,0 +1,17 @@
+.stat-container {
+    padding: 20px;
+    box-shadow: 2px 2px 2px orange;
+    border-radius: 10px;
+    width: 200px;
+    background-color: rgb(130, 130, 130, 0.3);
+}
+
+.label {
+    display: flex;
+    gap: 5px;
+}
+
+.value {
+    font-size: 40px;
+
+}

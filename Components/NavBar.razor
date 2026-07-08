@@ -1,0 +1,53 @@
+@inject miniapp.Services.AuthService Auth
+@inject NavigationManager Nav
+
+<nav style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+    <div class="mobile">
+        <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/dashboard"
+                 Match="NavLinkMatch.All">🏠 Home</NavLink>
+    </div>
+    @if (Auth.Role == "Admin")
+    {
+        <div class="mobile">
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/tasks"
+                     Match="NavLinkMatch.All">📝 Tasks</NavLink>
+        </div>
+        <div class="mobile">
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/profile"
+                     Match="NavLinkMatch.All">👤 Profile</NavLink>
+        </div>
+    }
+    <p style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
+       Match="NavLinkMatch.All">👤 @Auth.Username 🏷️ @Auth.Role</p>
+    @if (Auth.IsLoggedIn)
+    {
+        <div class="mobile">
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/"
+                     @onclick="LogoutUser" Match="NavLinkMatch.All">
+                <ButtonCard BgColor="white" BtnText="⌫ Logout" OnClick="LogoutUser" />
+            </NavLink>
+        </div>
+    }
+    else
+    {
+        <div class="mobile">
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/"
+                     @onclick="LogoutUser" Match="NavLinkMatch.All">
+                <ButtonCard BgColor="white" BtnText="🚪 Login" OnClick="LoginUser" />
+            </NavLink>
+        </div>
+    }
+</nav>
+
+@code {
+    private void LoginUser()
+    {
+        Nav.NavigateTo("/");
+    }
+
+    private void LogoutUser()
+    {
+        Auth.Logout();
+        Nav.NavigateTo("/");
+    }
+}

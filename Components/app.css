@@ -1,0 +1,22 @@
+/* *{
+    margin: 0;
+}
+
+.top{
+    height: 90px;
+    background: linear-gradient( red,yellow,blue,hotpink);
+    border-radius: ;
+}
+
+.top h1{
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    
+} */
+
+body {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(158, 158, 158, 0.6)),
+        url('loginbg.webp');
+        background-repeat: no-repeat;
+        background-size: cover;
+}

@@ -1,0 +1,17 @@
+<div
+    style="width: 100%; height: 30vh; font-size: 20px; display: flex; align-items: center; justify-content: center; text-align: center;">
+    <div>
+        <p>@Title</p>
+        <p>
+            <NavLink
+            style="text-decoration: none; color: white; background: rgb(133, 0, 133, 0.3); padding: 10px 20px; border-radius: 10px; font-weight: bold; font-size: 15px;"
+            href="/" Match="NavLinkMatch.All">🚪 Login</NavLink>
+            @SubTitle
+        </p>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string SubTitle { get; set; } = "";
+}

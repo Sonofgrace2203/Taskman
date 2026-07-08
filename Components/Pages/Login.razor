@@ -1,0 +1,89 @@
+@page "/"
+@using miniapp.Components
+@inject miniapp.Services.AuthService Auth
+@inject NavigationManager Nav
+
+@if (isLoading)
+{
+    <p>⏳ Loading...</p>
+}
+else
+{
+    <div class="login-container">
+        <h3>Login</h3>
+        <div class="sub-container">
+            <div class="input-container">
+                <label for="username">Username</label>
+                <input type="text" placeholder="enter username..." @bind="username" />
+            </div>
+
+            <div class="input-container">
+                <label for="username">Password</label>
+                <input type="password" placeholder="enter password..." @bind="password" />
+            </div>
+
+            <div class="input-container">
+                <button @onclick="LoginUser">Login</button>
+            </div>
+
+            @if (!Auth.IsLoggedIn)
+            {
+                <p>@errorMessage</p>
+            }
+
+            <div class="signup">
+                <p>Don't have an account?</p>
+                <ButtonCard BgColor="rgb(127, 0, 127, 0.3)" BtnText="Sign Up" OnClick="SignUp" />
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string errorMessage = "";
+    private bool isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        await Task.Delay(1000);
+        isLoading = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Auth.LoadUsers();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        if (Auth.IsLoggedIn)
+        {
+            Nav.NavigateTo("/dashboard");
+        }
+    }
+
+    private void LoginUser()
+    {
+        bool success = Auth.Login(username, password);
+
+        if (success)
+        {
+            Nav.NavigateTo("/dashboard");
+        }
+        else
+        {
+            errorMessage = "⚠️ Username of Password is not correct";
+        }
+    }
+
+    private void SignUp()
+    {
+        Nav.NavigateTo("/signup");
+    }
+}

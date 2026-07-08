@@ -1,0 +1,13 @@
+<button @onclick="HandleClick" style="background: @BgColor; padding: 10px 20px; border: none; border-radius: 10px;">@BtnText</button>
+
+@code {
+    [Parameter] public bool ConfirmClear { get; set; }
+    [Parameter] public string BgColor { get; set; } = "";
+    [Parameter] public string BtnText { get; set; } = "";
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    private async Task HandleClick()
+    {
+        await OnClick.InvokeAsync();
+    }
+}

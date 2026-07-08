@@ -1,0 +1,75 @@
+.login-container {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(158, 158, 158, 0.6)),
+        url('loginbg.webp');
+        background-repeat: no-repeat;
+        background-size: cover;
+}
+
+div .sub-container {
+    background: orange;
+    color: white;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px gray;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+    min-width: 40%;
+    max-width: 70%;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    padding: 5px;
+}
+
+div button {
+    width: 100%;
+    padding: 5px;
+    background: purple;
+    color: white;
+    border: none;
+}
+
+div button:hover {
+    width: 100%;
+    padding: 5px;
+    background: rgb(129, 0, 129, 0.3);
+    border: none;
+    transition: 0.3s ease-in-out;
+}
+
+div input {
+    padding: 5px;
+    border: none;
+    border-bottom: 2px solid purple;
+    font-size: 10px;
+    background: none;
+}
+
+label {
+    font-size: 15px;
+}
+
+div p {
+    text-align: center;
+    padding: 20px;
+    color: purple;
+}
+
+.signup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.signup .btn {
+    width: 50px;
+}

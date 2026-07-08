@@ -1,0 +1,13 @@
+<div class="stat-container">
+    <div class="label">
+        <p>@Icon</p>
+        <p>@Label</p>
+    </div>
+    <p class="value">@Value</p>
+</div>
+
+@code {
+    [Parameter] public string Icon { get; set; } = "";
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string Value { get; set; } = "";
+}
