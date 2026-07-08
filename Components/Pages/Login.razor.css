@@ -54,8 +54,12 @@ div input {
     background: none;
 }
 
-input:focus {
+div input:focus {
+    padding: 5px;
     border: none;
+    border-bottom: 2px solid purple;
+    font-size: 10px;
+    background: none;
 }
 
 label {
