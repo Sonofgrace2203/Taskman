@@ -113,6 +113,10 @@ div input[b-0ww7vns9iz] {
     background: none;
 }
 
+input:focus[b-0ww7vns9iz] {
+    border: none;
+}
+
 label[b-0ww7vns9iz] {
     font-size: 15px;
 }
@@ -193,6 +197,10 @@ div input[b-6hzfn2tvxj] {
     background: none;
 }
 
+input:focus[b-6hzfn2tvxj] {
+    border: none;
+}
+
 div select[b-6hzfn2tvxj] {
     padding: 5px;
     border: none;
@@ -240,6 +248,10 @@ div p[b-6hzfn2tvxj] {
     color: purple;
     font-weight: bold;
     transition: 0.3s ease-out;
+}
+
+input:focus[b-t5dwqe0v9t] {
+    border: none;
 }
 /* /Components/StatCard.razor.rz.scp.css */
 .stat-container[b-rcdnksctwj] {
