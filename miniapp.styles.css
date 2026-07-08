@@ -213,6 +213,16 @@ div input:focus[b-6hzfn2tvxj], input:focus[b-6hzfn2tvxj] {
     background: none;
 }
 
+div select:focus[b-6hzfn2tvxj], select:focus[b-6hzfn2tvxj] {
+    outline: none;       /* This removes the default browser highlight */
+    box-shadow: none;    /* This removes the default shadow in iOS/Safari */
+    padding: 5px;
+    border: none;
+    border-bottom: 2px solid purple;
+    font-size: 10px;
+    background: none;
+}
+
 
 div select[b-6hzfn2tvxj] {
     padding: 5px;
