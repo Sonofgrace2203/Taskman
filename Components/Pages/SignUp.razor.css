@@ -8,6 +8,7 @@
         url('loginbg.webp');
     background-repeat: no-repeat;
     background-size: cover;
+    overflow: scroll;
 }
 
 div .sub-container {
