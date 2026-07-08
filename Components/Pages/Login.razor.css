@@ -54,6 +54,10 @@ div input {
     background: none;
 }
 
+input:focus {
+    border: none;
+}
+
 label {
     font-size: 15px;
 }

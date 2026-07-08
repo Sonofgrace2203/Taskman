@@ -58,6 +58,10 @@ div input {
     background: none;
 }
 
+input:focus {
+    border: none;
+}
+
 div select {
     padding: 5px;
     border: none;
