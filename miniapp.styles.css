@@ -65,8 +65,8 @@ nav .nav-item:hover[b-4iub4don6c] {
     flex-direction: column;
     background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(158, 158, 158, 0.6)),
         url('loginbg.webp');
-        background-repeat: no-repeat;
-        background-size: cover;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 div .sub-container[b-0ww7vns9iz] {
@@ -113,13 +113,15 @@ div input[b-0ww7vns9iz] {
     background: none;
 }
 
-div input:focus[b-0ww7vns9iz] {
+div input:focus[b-0ww7vns9iz], input:focus[b-0ww7vns9iz] {
     padding: 5px;
     border: none;
     border-bottom: 2px solid purple;
     font-size: 10px;
     background: none;
+box-shadow: none;
 }
+
 
 label[b-0ww7vns9iz] {
     font-size: 15px;
@@ -202,7 +204,13 @@ div input[b-6hzfn2tvxj] {
 }
 
 input:focus[b-6hzfn2tvxj] {
+    outline: none;
+    padding: 5px;
     border: none;
+    border-bottom: 2px solid purple;
+    font-size: 10px;
+    background: none;
+    box-shadow: none;
 }
 
 div select[b-6hzfn2tvxj] {
@@ -255,7 +263,13 @@ div p[b-6hzfn2tvxj] {
 }
 
 input:focus[b-t5dwqe0v9t] {
+    outline: none;
+    padding: 5px;
     border: none;
+    border-bottom: 2px solid purple;
+    font-size: 10px;
+    background: none;
+    box-shadow: none;
 }
 /* /Components/StatCard.razor.rz.scp.css */
 .stat-container[b-rcdnksctwj] {
