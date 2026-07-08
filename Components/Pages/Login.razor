@@ -64,7 +64,7 @@ else
     {
         if (Auth.IsLoggedIn)
         {
-            Nav.NavigateTo("/dashboard");
+            Nav.NavigateTo("dashboard");
         }
     }
 
@@ -74,7 +74,7 @@ else
 
         if (success)
         {
-            Nav.NavigateTo("/dashboard");
+            Nav.NavigateTo("dashboard");
         }
         else
         {
@@ -84,6 +84,9 @@ else
 
     private void SignUp()
     {
-        Nav.NavigateTo("/signup");
+        @* Nav.NavigateTo("signup"); *@
+        Nav.NavigateTo($"{Nav.BaseUri}/dashboard");
+
+
     }
 }
