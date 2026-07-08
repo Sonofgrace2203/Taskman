@@ -153,6 +153,7 @@ div p[b-0ww7vns9iz] {
         url('loginbg.webp');
     background-repeat: no-repeat;
     background-size: cover;
+    overflow: scroll;
 }
 
 div .sub-container[b-6hzfn2tvxj] {
