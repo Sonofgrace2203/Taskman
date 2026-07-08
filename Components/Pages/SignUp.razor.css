@@ -92,3 +92,9 @@ div p {
     padding: 20px;
     color: blue;
 }
+
+.signup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
