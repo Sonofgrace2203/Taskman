@@ -33,12 +33,12 @@
     transition: 0.3s ease-out;
 }
 
-input:focus {
-    outline: none;
+div input:focus, input:focus {
+    outline: none;       /* This removes the default browser highlight */
+    box-shadow: none;    /* This removes the default shadow in iOS/Safari */
     padding: 5px;
     border: none;
     border-bottom: 2px solid purple;
     font-size: 10px;
     background: none;
-    box-shadow: none;
 }
