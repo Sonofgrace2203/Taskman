@@ -237,6 +237,12 @@ div p[b-6hzfn2tvxj] {
     padding: 20px;
     color: blue;
 }
+
+.signup[b-6hzfn2tvxj] {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 /* /Components/Pages/Tasks.razor.rz.scp.css */
 @media (min-width: 300px) and (max-width: 700px) {
     .mobile button[b-t5dwqe0v9t] {
