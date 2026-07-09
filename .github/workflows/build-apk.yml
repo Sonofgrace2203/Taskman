@@ -1,0 +1,62 @@
+name: Build Android APK
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1. Setup Environment
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Setup Node & Java
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          # CHANGED: Switched from Java 17 to Java 11 to bypass the bcprov Gradle crash
+          java-version: '11' 
+
+      # 2. Compile Blazor Web Files
+      - name: Publish Blazor
+        run: dotnet publish -c Release -o release-output
+
+      # 3. Try building with Capacitor
+      - name: Capacitor Android Build
+        run: |
+          npm install -g @capacitor/cli
+          WEB_DIR="release-output/wwwroot"
+          if [ ! -d "$WEB_DIR" ]; then WEB_DIR=$(find release-output -type d -name "wwwroot" | head -n 1); fi
+          
+          npx cap init "Taskman" "com.example.taskman" --web-dir="$WEB_DIR"
+          npm install @capacitor/core @capacitor/android
+          npx cap add android
+          npx cap sync
+          
+          # FIX: Force Gradle settings to bypass caching conflicts before compiling
+          cd android
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+
+      # 4. Extract and Force Upload ANY APK generated
+      - name: Locate and copy APK
+        run: |
+          mkdir -p final-apk
+          find android/ -name "*.apk" -exec cp {} final-apk/ \;
+          ls -R final-apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Blazor-Android-APK
+          path: final-apk/
+          if-no-files-found: error
+          
