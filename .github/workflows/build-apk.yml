@@ -2,18 +2,22 @@ name: Build Android APK
 on:
   push:
     branches: [ main, master ]
+  workflow_dispatch: # Allows you to manually trigger it
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+
       - name: Publish Blazor
         run: dotnet publish -c Release -o release-output
+
       - name: Setup Node & Java
         uses: actions/setup-node@v4
         with:
@@ -22,6 +26,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+
       - name: Capacitor Android Build
         run: |
           npm install -g @capacitor/cli
@@ -30,8 +35,18 @@ jobs:
           npx cap add android
           npx cap sync
           cd android && chmod +x gradlew && ./gradlew assembleDebug
+
+      # This new step forces GitHub to find exactly where the APK was stored
+      - name: Locate and copy APK
+        run: |
+          mkdir -p final-apk
+          find android/ -name "*.apk" -exec cp {} final-apk/ \;
+          ls -R final-apk
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Blazor-Android-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: final-apk/
+          if-no-files-found: error # This will force a RED X if the APK is truly missing
+          
