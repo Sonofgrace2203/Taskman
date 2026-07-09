@@ -2,7 +2,7 @@ name: Build Android APK
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch: # Allows you to manually trigger it
+  workflow_dispatch:
 
 jobs:
   build:
@@ -10,14 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 1. Setup Environment
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
-
-      - name: Publish Blazor
-        run: dotnet publish -c Release -o release-output
-
+          dotnet-version: '8.0.x'
       - name: Setup Node & Java
         uses: actions/setup-node@v4
         with:
@@ -27,16 +24,29 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      # 2. Compile Blazor Web Files
+      - name: Publish Blazor
+        run: dotnet publish -c Release -o release-output
+
+      # 3. Debug Folder Structure (This logs your exact files so we can find them)
+      - name: List Published Files
+        run: ls -R release-output
+
+      # 4. Try building with Capacitor
       - name: Capacitor Android Build
         run: |
           npm install -g @capacitor/cli
-          npx cap init "BlazorApp" "com.example.app" --web-dir=release-output/wwwroot
+          # Dynamically detect if wwwroot or a subfolder exists
+          WEB_DIR="release-output/wwwroot"
+          if [ ! -d "$WEB_DIR" ]; then WEB_DIR=$(find release-output -type d -name "wwwroot" | head -n 1); fi
+          
+          npx cap init "BlazorApp" "com.example.app" --web-dir="$WEB_DIR"
           npm install @capacitor/core @capacitor/android
           npx cap add android
           npx cap sync
           cd android && chmod +x gradlew && ./gradlew assembleDebug
 
-      # This new step forces GitHub to find exactly where the APK was stored
+      # 5. Extract and Force Upload ANY APK generated
       - name: Locate and copy APK
         run: |
           mkdir -p final-apk
@@ -48,5 +58,5 @@ jobs:
         with:
           name: Blazor-Android-APK
           path: final-apk/
-          if-no-files-found: error # This will force a RED X if the APK is truly missing
+          if-no-files-found: error
           
