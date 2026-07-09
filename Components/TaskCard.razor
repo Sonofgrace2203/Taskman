@@ -32,6 +32,7 @@
                 }
                 @Task.Priority
             </button>
+            @* <button @onclick="() => OnEdit.InvokeAsync(Task.Id)">edit</button> *@
             @if (TaskIdToDelete == Task.Id)
             {
                 <button style="width: 200px; margin-left: 5px; transition: 0.3s ease-in">
@@ -54,6 +55,7 @@
     [Parameter] public AppTask Task { get; set; } = new();
     [Parameter] public EventCallback<int> OnDelete { get; set; }
     [Parameter] public EventCallback<int> OnToggle { get; set; }
+    [Parameter] public EventCallback<int> OnEdit { get; set; }
 }
 
 

@@ -10,7 +10,8 @@
 
 <NavBar />
 
-<div class="mobile" style="display: flex; flex-wrap: wrap; margin-bottom: 20px; gap: 5px; justify-content: space-between;">
+<div class="mobile"
+     style="display: flex; flex-wrap: wrap; margin-bottom: 20px; gap: 5px; justify-content: space-between;">
     <h3 style="margin-bottom: 30px;">📝 Task Manager </h3>
     @if (Auth.IsLoggedIn)
     {
@@ -36,10 +37,15 @@
         </select>
         <div class="opt-btn">
             <button class="btn-hov"
-            style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); border-radius: 10px;" @onclick="AllTasks">All</button>
-            <button class="btn-hov" style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); border-radius: 10px;" @onclick="Pending">⏳
+                    style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); border-radius: 10px;"
+                    @onclick="AllTasks">All</button>
+            <button class="btn-hov"
+                    style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); border-radius: 10px;"
+                    @onclick="Pending">⏳
                 Pending</button>
-                <button class="btn-hov" style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); border-radius: 10px;" @onclick="Completed">✅
+                <button class="btn-hov"
+                        style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); border-radius: 10px;"
+                        @onclick="Completed">✅
                     Done</button>
                 </div>
             </div>
@@ -82,7 +88,7 @@
 
             <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 50px;">
                 <ButtonCard BgColor="rgb(140, 0, 140, 0.3)" BtnText="➕ AddTask" OnClick="AddTask" />
-                <ButtonCard BgColor="rgb(126, 126, 126, 0.3)" BtnText="Move Completed Task ➡" OnClick="MoveCompletedTask" />
+                @* <ButtonCard BgColor="rgb(126, 126, 126, 0.3)" BtnText="Move Completed Task ➡" OnClick="MoveCompletedTask" /> *@
             </div>
 
             <hr />
@@ -93,14 +99,15 @@
             }
             else
             {
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <input type="text" placeholder="search task" @bind-value="searchTask" @bind-value:event="oninput" />
+                </div>
                 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; padding-top: 10px;">
                     <h4>📁 Available Task</h4>
                     @if (confirmClear)
                     {
                         <div style="display: flex; gap:10px;">
-                            <div class="mgb-2">
-                                <ButtonCard BgColor="rgb(140, 0, 140, 0.3)" BtnText="✅ Clear" OnClick="ClearTask" />
-                            </div>
+                            <ButtonCard BgColor="rgb(140, 0, 140, 0.3)" BtnText="✅ Clear" OnClick="ClearTask" />
                             <ButtonCard BgColor="rgb(126, 126, 126, 0.3)" BtnText="❌ Cancel" OnClick="() => confirmClear = false" />
                         </div>
                     }
@@ -121,7 +128,7 @@
                     {
                         <div style="background: rgba(228, 228, 228, 0.1);">
                             <ul style="margin: 20px 0px 40px;">
-                                @foreach (var task in filteredtasks)
+                                @foreach (var task in FilteredItems)
                                 {
                                     @if (task.IsComplete)
                                     {
@@ -132,8 +139,9 @@
                                     }
                                     else
                                     {
-                                        <li style="margin: 10px 0; padding: 7px; list-style: none; border-left: 3px solid purple; background: rgb(129, 129, 129, 0.1);">
-                                            <TaskCard Task="@task" OnToggle="ToggleTask" OnDelete="DeleteTask" TaskIdToDelete="Taskss.Id" />
+                                        <li
+                                            style="margin: 10px 0; padding: 7px; list-style: none; border-left: 3px solid purple; background: rgb(129, 129, 129, 0.1);">
+                                            <TaskCard Task="@task" OnToggle="ToggleTask" OnDelete="DeleteTask" OnEdit="EditTask" TaskIdToDelete="Taskss.Id" />
                                         </li>
                                     }
                                 }
@@ -197,6 +205,7 @@ align-items: center; justify-content: center;">
 
 @code {
     private string taskTitle = "";
+    private string searchTask = "";
 
     @* private bool isLoading = false; *@
     private bool isLoading { get; set; }
@@ -212,25 +221,30 @@ align-items: center; justify-content: center;">
 
     private AppTask Taskss = new();
 
-    private string currentFilter = "All"; 
+    private string currentFilter = "All";
 
-    
-
-
-
-    // 2. Adjust this property to apply the filter automatically
-    public List<AppTask> filteredtasks => GetFilteredTasks();
-
-    private List<AppTask> GetFilteredTasks()
+    private IEnumerable<AppTask> FilteredItems
     {
-        var allTasks = TaskService.GetAll() ?? new List<AppTask>();
-
-        return currentFilter switch
+        get
         {
-            "Pending" => allTasks.Where(t => !t.IsComplete).ToList(),
-            "Done"    => allTasks.Where(t => t.IsComplete).ToList(),
-            _         => allTasks // "All"
-        };
+            var allTasks = TaskService.GetAll() ?? new List<AppTask>();
+
+            var statusFiltered = currentFilter switch
+            {
+                "Pending" => allTasks.Where(t => !t.IsComplete),
+                "Done" => allTasks.Where(t => t.IsComplete),
+                _ => allTasks
+            };
+
+            if (!string.IsNullOrWhiteSpace(searchTask))
+            {
+                statusFiltered = statusFiltered.Where(t =>
+                    t.Title != null &&
+                    t.Title.Contains(searchTask, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return statusFiltered;
+        }
     }
 
     protected override async Task OnInitializedAsync()
@@ -271,6 +285,24 @@ align-items: center; justify-content: center;">
             await SaveTask();
         }
     }
+
+    private async Task EditTask(int id)
+    {
+        if (string.IsNullOrEmpty(taskTitle) || taskPriority == Priority.Select_Priority) return;
+
+        TaskService.Edit(id, trimmedTaskTitle, taskPriority);
+
+        taskTitle = "";
+        taskPriority = Priority.Select_Priority;
+
+        RefreshTasks();
+
+        if (Auth.IsLoggedIn)
+        {
+            await SaveTask();
+        }
+    }
+
 
     private async Task MoveCompletedTask()
     {
@@ -347,11 +379,6 @@ align-items: center; justify-content: center;">
         TaskService.OnChange -= HandleStateChanged;
     }
 }
-
-
-
-
-
 
 
 

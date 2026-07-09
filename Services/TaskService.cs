@@ -16,7 +16,7 @@ public class TaskService : ITaskService
 
     public AppTask newTask = new();
 
-    public  List<AppTask> tasks = new();
+    public List<AppTask> tasks = new();
     // public int nextId = 1;
 
     public event Action? OnChange;
@@ -49,6 +49,21 @@ public class TaskService : ITaskService
                 IsComplete = false
             };
             tasks.Add(newTask);
+        }
+        Notify();
+    }
+
+    public void Edit(int id, string title, Priority priority)
+    {
+        lock (_lock)
+        {
+            var existingTask = tasks.FirstOrDefault(t => t.Id == id);
+
+            if (existingTask != null)
+            {
+                existingTask.Title = title;
+                existingTask.Priority = priority;
+            }
         }
         Notify();
     }
@@ -94,12 +109,12 @@ public class TaskService : ITaskService
         var jsonString = JsonSerializer.Serialize(tasks);
         await JS.InvokeVoidAsync("localStorage.setItem", "All_Tasks", jsonString);
     }
-    
+
     bool loaded;
     public async Task LoadTasks()
     {
         if (loaded)
-        return;
+            return;
         var jsonString = await JS.InvokeAsync<string>("localStorage.getItem", "All_Tasks");
         if (!string.IsNullOrEmpty(jsonString))
         {
@@ -109,7 +124,7 @@ public class TaskService : ITaskService
                 tasks = savedTasks;
             }
         }
-        loaded=true;
+        loaded = true;
     }
 
     public void ToggleCompleted(int id)
@@ -119,7 +134,7 @@ public class TaskService : ITaskService
             var task = tasks.FirstOrDefault(t => t.Id == id);
 
             task?.IsComplete = !task.IsComplete;
-            
+
             SaveTask();
             LoadTasks();
             Notify();
