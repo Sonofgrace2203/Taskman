@@ -295,6 +295,21 @@ div select:focus[b-t5dwqe0v9t], select:focus[b-t5dwqe0v9t] {
     padding: 10px;
     background: none;
 }
+
+input[b-t5dwqe0v9t] {
+    background-color: rgb(121, 0, 121, 0.1);
+    border-radius: 10px;
+    padding: 10px 20px;
+    border: none;
+}
+
+input:focus[b-t5dwqe0v9t] {
+    outline: none;
+    background-color: rgb(121, 0, 121, 0.1);
+    border-radius: 10px;
+    padding: 10px 20px;
+    border: none;
+}
 /* /Components/StatCard.razor.rz.scp.css */
 .stat-container[b-rcdnksctwj] {
     padding: 20px;
