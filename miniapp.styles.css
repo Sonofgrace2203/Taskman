@@ -303,12 +303,19 @@ input[b-t5dwqe0v9t] {
     border: none;
 }
 
+input[b-t5dwqe0v9t] {
+    background-color: rgb(121, 0, 121, 0.1);
+    border-radius: 10px;
+    padding: 10px 20px;
+    border-bottom: 2px solid orange;
+}
+
 input:focus[b-t5dwqe0v9t] {
     outline: none;
     background-color: rgb(121, 0, 121, 0.1);
     border-radius: 10px;
     padding: 10px 20px;
-    border: none;
+    border-bottom: 2px solid orange;
 }
 /* /Components/StatCard.razor.rz.scp.css */
 .stat-container[b-rcdnksctwj] {
