@@ -280,34 +280,11 @@ div p[b-6hzfn2tvxj] {
     transition: 0.3s ease-out;
 }
 
-div input:focus[b-t5dwqe0v9t], input:focus[b-t5dwqe0v9t] {
-    outline: none;       /* This removes the default browser highlight */
-    box-shadow: none;    /* This removes the default shadow in iOS/Safari */
-    border: none;
-    padding: 10px;
-    background: none;
-}
-
-div select:focus[b-t5dwqe0v9t], select:focus[b-t5dwqe0v9t] {
-    outline: none;       /* This removes the default browser highlight */
-    box-shadow: none;    /* This removes the default shadow in iOS/Safari */
-    border: none;
-    padding: 10px;
-    background: none;
-}
-
 input[b-t5dwqe0v9t] {
     background-color: rgb(121, 0, 121, 0.1);
     border-radius: 10px;
     padding: 10px 20px;
     border: none;
-}
-
-input[b-t5dwqe0v9t] {
-    background-color: rgb(121, 0, 121, 0.1);
-    border-radius: 10px;
-    padding: 10px 20px;
-    border-bottom: 2px solid orange;
 }
 
 input:focus[b-t5dwqe0v9t] {
@@ -315,7 +292,55 @@ input:focus[b-t5dwqe0v9t] {
     background-color: rgb(121, 0, 121, 0.1);
     border-radius: 10px;
     padding: 10px 20px;
-    border-bottom: 2px solid orange;
+    border: none;
+}
+
+.disabled-container[b-t5dwqe0v9t] {
+    pointer-events: none;
+    opacity: 0.4;
+    user-select: none;
+}
+
+.confirm-disable[b-t5dwqe0v9t] {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgb(0, 0, 0, 0.3);
+}
+
+.notify[b-t5dwqe0v9t] {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.notify-in[b-t5dwqe0v9t] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.notify .notify-inner[b-t5dwqe0v9t] {
+    text-align: center;
+    width: 25%;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.btn-li[b-t5dwqe0v9t] {
+    width: 100%;
+    display: block;
+    background: none;
+    border: none;
+    margin-bottom: 5px;
 }
 /* /Components/StatCard.razor.rz.scp.css */
 .stat-container[b-rcdnksctwj] {
