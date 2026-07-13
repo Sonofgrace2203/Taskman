@@ -1,0 +1,5 @@
+{
+  "appId": "com.mustapha.taskman",
+  "appName": "TaskMan",
+  "webDir": "bin/Release/net10.0/publish/wwwroot"
+}

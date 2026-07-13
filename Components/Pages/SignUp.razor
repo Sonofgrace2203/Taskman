@@ -119,32 +119,21 @@ else
 
     private async Task SignupUser()
     {
-        var user = Auth.SignUp(firstname, lastname, email, role, dateOfBirth, username, password, confirmPassword);
-
-        bool success = true;
-
-        var newUser = new UserModel
+        if (password != confirmPassword)
         {
-            FirstName = firstname,
-            LastName = lastname,
-            Email = email,
-            DateOfBirth = dateOfBirth,
-            Username = username,
-            Password = password,
-            Role = role
-        };
+            errorMessage = "⚠️ Passwords do not match.";
+            return;
+        }
 
-        users.Add(newUser);
-        await SaveUser();
-        await LoadUsers();
+        var result = await Auth.SignUp(firstname, lastname, email, role, dateOfBirth, username, password, confirmPassword);
 
-        if (success)
+        if (result == "Success")
         {
             Nav.NavigateTo("signupsuccess");
         }
         else
         {
-            errorMessage = "⚠️ User already exist.";
+            errorMessage = $"⚠️ {result}";
         }
     }
 

@@ -4,7 +4,7 @@
         <td class="td1">
             <div @onclick="() => OnToggle.InvokeAsync(Task.Id)" class="container-title">
                 <p>
-                    <input type="checkbox" @bind="Task.IsComplete">
+                    <input style="user-select: none; pointer-events: none;" type="checkbox" checked="@Task.IsComplete" @onclick:stopPropagation="true" />
                 </p>
 
                 <p>@Task.Title</p>
@@ -32,25 +32,25 @@
                 }
                 @Task.Priority
             </button>
-            @* <button @onclick="() => OnEdit.InvokeAsync(Task.Id)">edit</button> *@
-            @if (TaskIdToDelete == Task.Id)
+            @if (TaskIdToDelete != Task.Id)
             {
-                <button style="width: 200px; margin-left: 5px; transition: 0.3s ease-in">
-                    <button style="font-size: 12px; margin-right: 10px;" @onclick="() => OnDelete.InvokeAsync(Task.Id)">✅ Confirm</button>
-                    <button style="font-size: 12px;" @onclick="() => TaskIdToDelete = null">❌ Cancel</button>
-                </button>
+                <button @onclick="() => OnRequestDelete.InvokeAsync(Task.Id)">🗑️</button>
             }
             else
             {
-                <button @onclick="() => TaskIdToDelete = Task.Id">🗑️</button>
-            }
-        </td>
-    </tr>
-</table>
+                <div style="width: 200px; margin-left: 5px; transition: 0.3s ease-in">
+                    <button style="font-size: 12px; margin-right: 10px;" @onclick="() => OnDelete.InvokeAsync(Task.Id)">✅
+                        Confirm</button>
+                        <button style="font-size: 12px;" @onclick="() => OnRequestDelete.InvokeAsync(-1)">❌ Cancel</button>
+                    </div>
+                }
+            </td>
+        </tr>
+    </table>
 
 @code {
     [Parameter] public int? TaskIdToDelete { get; set; } = null;
-    @* [Parameter] public EventCallback<bool> ConfirmDeleteChanged { get; set; } *@
+    [Parameter] public EventCallback<int> OnRequestDelete { get; set; }
 
     [Parameter] public AppTask Task { get; set; } = new();
     [Parameter] public EventCallback<int> OnDelete { get; set; }
@@ -70,94 +70,3 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@* 
-@using System.Reflection.Metadata
-
-<table class="task-container">
-    <tr class="tr">
-        <td class="td1">
-            <div @onclick="() => OnToggle.InvokeAsync(Task.Id)" class="container-title">
-                <p>
-                    <input type="checkbox" @bind="Task.IsComplete">
-                </p>
-                <p>@Task.Title</p>
-            </div>
-        </td>
-        <td class="td2">
-            <button type="button">
-                @if (Task.Priority == Priority.Low)
-                {
-                    <span>🔴</span>
-                }
-                else if (Task.Priority == Priority.Medium)
-                {
-                    <span>🟡</span>
-                }
-                else if (Task.Priority == Priority.High)
-                {
-                    <span>🟢</span>
-                }
-                @Task.Priority
-            </button>
-
-            @if (isConfirming)
-            {
-                <!-- FIX: Changed from <button> to <div> to prevent invalid nested buttons -->
-                <div style="display: inline-block; width: 200px; margin-left: 5px; transition: 0.3s ease-in">
-                    <button type="button" style="font-size: 12px; margin-right: 10px;" @onclick="ExecuteDelete">✅ Confirm</button>
-                    <button type="button" style="font-size: 12px;" @onclick="ToggleConfirm">❌ Cancel</button>
-                </div>
-            }
-            else
-            {
-                <button type="button" @onclick="ToggleConfirm">🗑️</button>
-            }
-        </td>
-    </tr>
-</table>
-
-@code {
-    // FIX: Each row component now holds its own isolated confirmation state
-    private bool isConfirming = false;
-
-    [Parameter] public AppTask Task { get; set; } = new();
-    [Parameter] public EventCallback<int> OnDelete { get; set; }
-    [Parameter] public EventCallback<int> OnToggle { get; set; }
-
-    private void ToggleConfirm()
-    {
-        isConfirming = !isConfirming;
-    }
-
-    private async Task ExecuteDelete()
-    {
-        await OnDelete.InvokeAsync(Task.Id);
-        isConfirming = false; 
-    }
-} *@

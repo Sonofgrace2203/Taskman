@@ -88,7 +88,6 @@
 
             <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 50px;">
                 <ButtonCard BgColor="rgb(140, 0, 140, 0.3)" BtnText="➕ AddTask" OnClick="AddTask" />
-                @* <ButtonCard BgColor="rgb(126, 126, 126, 0.3)" BtnText="Move Completed Task ➡" OnClick="MoveCompletedTask" /> *@
             </div>
 
             <hr />
@@ -102,6 +101,11 @@
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                     <input type="text" placeholder="search task" @bind-value="searchTask" @bind-value:event="oninput" />
                 </div>
+                @if (!string.IsNullOrWhiteSpace(searchTask) && !FilteredItems.Any())
+                {
+                    <p style="margin:10px 0; color: red;">🔍 No task(s) found.</p>
+                }
+
                 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; padding-top: 10px;">
                     <h4>📁 Available Task</h4>
                     @if (confirmClear)
@@ -130,18 +134,38 @@
                             <ul style="margin: 20px 0px 40px;">
                                 @foreach (var task in FilteredItems)
                                 {
-                                    @if (task.IsComplete)
+                                    @if (activeNotifyTaskId == task.Id)
                                     {
-                                        <li
+                                        <div class="notify">
+                                            <div class="notify-in">
+                                                <div class="notify-inner">
+                                                    <p style="padding: 20px;">Confirm to complete this task.</p>
+                                                    <div style="display: flex; justify-content: space-around; padding: 20px;">
+                                                        <button
+                                                        style="background: rgb(135, 0, 135, 0.3); padding: 10px 20px; border: none; border-radius: 10px;"
+                                                        @onclick="() => CompleteTask(task.Id)">Confirm</button>
+                                                        <button
+                                                        style="background: rgb(131, 131, 131, 0.3); padding: 10px 20px; border: none; border-radius: 10px;"
+                                                        @onclick="() => activeNotifyTaskId = null">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (task.IsComplete)
+                                    {
+                                        <li class='@(task.IsComplete ? "disabled-container" : "")'
                                             style="margin: 10px 0; padding: 7px; list-style: none; border-left: 3px solid purple; text-decoration: line-through; background: rgb(129, 129, 129, 0.1);">
-                                            <TaskCard Task="@task" OnToggle="ToggleTask" OnDelete="DeleteTask" TaskIdToDelete="Taskss.Id" />
+                                            <TaskCard Task="@task" TaskIdToDelete="@taskIdToDelete" OnRequestDelete="ShowDeleteConfirmation"
+                                                      OnDelete="DeleteTask" OnToggle="ToggleTask" />
                                         </li>
                                     }
                                     else
                                     {
                                         <li
                                             style="margin: 10px 0; padding: 7px; list-style: none; border-left: 3px solid purple; background: rgb(129, 129, 129, 0.1);">
-                                            <TaskCard Task="@task" OnToggle="ToggleTask" OnDelete="DeleteTask" OnEdit="EditTask" TaskIdToDelete="Taskss.Id" />
+                                            <TaskCard Task="@task" TaskIdToDelete="@taskIdToDelete" OnRequestDelete="ShowDeleteConfirmation"
+                                                      OnDelete="DeleteTask" OnToggle="ToggleTask" />
                                         </li>
                                     }
                                 }
@@ -165,50 +189,13 @@
                         </div>
                     }
                 }
-
-                <hr />
-
-                @* <h4>✅ Completed Task</h4>
-                @if (tasks.Any())
-                {
-                    <div style="background: rgb(129, 129, 129, 0.1); margin-top: 10px;">
-                        <ul style="margin: 30px 0px;">
-                            @foreach (var task in completedTasks)
-                            {
-                                @if (task.IsComplete)
-                                {
-                                    <li
-                                        style="margin: 5px 0; padding: 20px; list-style: none; border-left: 3px solid purple; text-decoration: line-through;">
-                                        <TaskCard Task="@task" OnToggle="ToggleTask" OnDelete="DeleteTask" TaskIdToDelete="Taskss.Id" />
-                                    </li>
-                                }
-                            }
-                        </ul>
-                    </div>
-                }
-                else
-                {
-                    @if (!isLoading)
-                    {
-                        <div
-                            style="display: flex; width: 100%; height: 100%; background: rgb(137, 137, 137, 0.1); margin-top: 20px; height: 50vh;
-align-items: center; justify-content: center;">
-                            <b>📁 No completed task yet.</b>
-                        </div>
-                    }
-                    else
-                    {
-                        <LoadingCardMinor LoadingState="⏳ Loading Completed Tasks..." />
-                    }
-                } *@
             }
 
 @code {
     private string taskTitle = "";
     private string searchTask = "";
-
-    @* private bool isLoading = false; *@
     private bool isLoading { get; set; }
+    private int? taskIdToDelete = null;
 
     private Priority taskPriority = Priority.Select_Priority;
 
@@ -223,11 +210,36 @@ align-items: center; justify-content: center;">
 
     private string currentFilter = "All";
 
+    private bool IsDisabled = false;
+
+    private int? activeNotifyTaskId;
+
+    private async Task CompleteTask(int id)
+    {
+        await TaskService.ToggleCompleted(id);
+        RefreshTasks();
+        activeNotifyTaskId = null;
+    }
+
+    private void ShowDeleteConfirmation(int id)
+    {
+        if (id == -1)
+        {
+            taskIdToDelete = null;
+            return;
+        }
+
+        if (taskIdToDelete == id)
+            taskIdToDelete = null;
+        else
+            taskIdToDelete = id;
+    }
+
     private IEnumerable<AppTask> FilteredItems
     {
         get
         {
-            var allTasks = TaskService.GetAll() ?? new List<AppTask>();
+            var allTasks = tasks;
 
             var statusFiltered = currentFilter switch
             {
@@ -247,26 +259,33 @@ align-items: center; justify-content: center;">
         }
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         isLoading = true;
-        await Task.Delay(3000);
-        TaskService.OnChange += HandleStateChanged;
-        isLoading = false;
+        return Task.CompletedTask;
     }
+
+    private bool _loaded;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender && !_loaded)
         {
+            _loaded = true;
+
             await TaskService.LoadTasks();
+
+            RefreshTasks();
+
+            isLoading = false;
+
+            StateHasChanged();
         }
     }
 
     protected override void OnInitialized()
     {
         TaskService.OnChange += HandleStateChanged;
-        RefreshTasks();
     }
 
     private async Task AddTask()
@@ -274,6 +293,7 @@ align-items: center; justify-content: center;">
         if (string.IsNullOrEmpty(taskTitle) || taskPriority == Priority.Select_Priority) return;
 
         TaskService.Add(trimmedTaskTitle, taskPriority);
+        taskIdToDelete = null;
 
         taskTitle = "";
         taskPriority = Priority.Select_Priority;
@@ -303,7 +323,6 @@ align-items: center; justify-content: center;">
         }
     }
 
-
     private async Task MoveCompletedTask()
     {
         TaskService.MoveTask(trimmedTaskTitle, taskPriority);
@@ -331,14 +350,26 @@ align-items: center; justify-content: center;">
         currentFilter = "Done";
     }
 
-    private void ToggleTask(int id)
+    private Task ToggleTask(int id)
     {
-        TaskService.ToggleCompleted(id);
+        Console.WriteLine($"Clicked Task: {id}");
+
+        activeNotifyTaskId = id;
+        IsDisabled = true;
+
+        StateHasChanged();
+
+        return Task.CompletedTask;
     }
 
     private async Task DeleteTask(int id)
     {
         TaskService.Delete(id);
+        taskIdToDelete = null;
+
+        taskIdToDelete = null;
+
+        RefreshTasks();
 
         if (Auth.IsLoggedIn)
         {
@@ -354,6 +385,7 @@ align-items: center; justify-content: center;">
         if (Auth.IsLoggedIn)
         {
             await SaveTask();
+            await TaskService.LoadTasks();
         }
     }
 
@@ -387,194 +419,3 @@ align-items: center; justify-content: center;">
 
 
 
-
-
-
-
-
-
-
-@* @page "/tasks"
-@using miniapp.Components
-@inject miniapp.Services.AuthService Auth
-@inject ITaskService TaskService
-@inject NavigationManager Nav
-@inject IJSRuntime JS
-@implements IDisposable
-@using System.Text.Json
-
-<NavBar />
-
-<h3 style="margin-bottom: 30px;">📝 Task Manager (@tasks.Count task added)</h3>
-
-<h5>Priority</h5>
-
-<div style="display: flex; gap: 100px;">
-    <select name="" id=""
-            style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); width: 50%; border-radius: 10px;">
-        <option value="All">All</option>
-        <option value="Pending">Pending</option>
-        <option value="Done">Done</option>
-    </select>
-    <div>
-        <button style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); border-radius: 10px;">All</button>
-        <button style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); border-radius: 10px;">⏳ Pending</button>
-        <button style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); border-radius: 10px;">✅ Done</button>
-    </div>
-</div>
-
-<div style="display: flex; gap: 100px; padding: 30px 0; width: 100%">
-    <div>
-        <label for="title">Title:</label>
-        <input type="text" placeholder="enter task title..." @bind="taskTitle"
-               style="padding: 10px; border: none; background: rgb(255, 166, 0, 0.2); width: 100%; border-radius: 10px;" />
-    </div>
-
-    <div class="input-container">
-        <label for="title">Priority:</label>
-        <select name="Priority" id="" @bind="taskPriority"
-                style="padding: 13px; border: none; background: rgb(255, 166, 0, 0.2); width: 100%; border-radius: 10px;">
-            @{
-                var values = Enum.GetValues<Priority>();
-            }
-            @foreach (var value in values)
-            {
-                <option value="@value">
-                    @if (value == Priority.Low)
-                    {
-                        <text>🔴</text>
-                    }
-                    else if (value == Priority.Medium)
-                    {
-                        <text>🟡</text>
-                    }
-                    else if (value == Priority.High)
-                    {
-                        <text>🟢</text>
-                    }
-                    @value.ToString()
-                </option>
-            }
-        </select>
-    </div>
-</div>
-
-<button @onclick="AddTask"
-        style="background: rgb(139, 0, 139, 0.4); border: none; border-radius: 10px; color: white; padding: 5px 20px;">➕ Add
-Task</button>
-
-@if (tasks.Any())
-{
-    <div style="background: rgb(129, 129, 129, 0.1); margin-top: 10px;">
-        <ul style="margin: 30px 0px;">
-            @foreach (var task in tasks)
-            {
-                <li style="margin: 5px 0; padding: 20px; list-style: none; border-left: 3px solid purple;">
-                    <TaskCard Task="@task" OnToggle="ToggleTask" OnDelete="DeleteTask" />
-                </li>
-            }
-        </ul>
-    </div>
-}
-else
-{
-    <div style="display: flex; width: 100%; background: rgb(137, 137, 137, 0.1); margin-top: 20px; height: 50vh;
-align-items: center; justify-content: center;">
-        <b>📁 No tasks added.</b>
-    </div>
-}
-
-@code {
-    private string taskTitle = "";
-    private Priority taskPriority = Priority.Select_Priority;
-    private string trimmedTaskTitle => taskTitle.Trim().ToUpper();
-
-    public List<AppTask> tasks = new();
-
-    // FIX: Using OnAfterRenderAsync ensures JS is active in the browser before attempting to read local storage
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            TaskService.OnChange += HandleStateChanged;
-            await LoadTasksFromLocalStorage();
-        }
-    }
-
-    private async Task AddTask()
-    {
-        if (string.IsNullOrEmpty(taskTitle) || taskPriority == Priority.Select_Priority) return;
-
-        TaskService.Add(trimmedTaskTitle, taskPriority);
-        taskTitle = "";
-        taskPriority = Priority.Low;
-
-        RefreshTasksList();
-        await SaveTasksToLocalStorage();
-    }
-
-    private async Task ToggleTask(int id)
-    {
-        TaskService.ToggleCompleted(id);
-        RefreshTasksList();
-        await SaveTasksToLocalStorage(); // FIX: Added save fallback on checking/unchecking tasks
-    }
-
-    private async Task DeleteTask(int id)
-    {
-        TaskService.Delete(id);
-        RefreshTasksList();
-        await SaveTasksToLocalStorage(); // FIX: Added save fallback on deleting tasks
-    }
-
-    private void RefreshTasksList()
-    {
-        tasks = TaskService.GetAll();
-        StateHasChanged();
-    }
-
-    // FIX: Serializes the list to a JSON string string representation so local storage accepts it properly
-    private async Task SaveTasksToLocalStorage()
-    {
-        var jsonString = JsonSerializer.Serialize(tasks);
-        await JS.InvokeVoidAsync("localStorage.setItem", "All_Tasks", jsonString);
-    }
-
-    // FIX: Retrieves JSON text string and correctly maps it back to C# structures safely
-    private async Task LoadTasksFromLocalStorage()
-    {
-        try
-        {
-            var jsonString = await JS.InvokeAsync<string>("localStorage.getItem", "All_Tasks");
-            if (!string.IsNullOrEmpty(jsonString))
-            {
-                var savedTasks = JsonSerializer.Deserialize<List<AppTask>>(jsonString);
-                if (savedTasks != null)
-                {
-                    // If your central TaskService handles data state, seed it here or assign list directly:
-                    tasks = savedTasks;
-                    StateHasChanged();
-                }
-            }
-            else
-            {
-                RefreshTasksList();
-            }
-        }
-        catch
-        {
-            RefreshTasksList(); // Fallback safely if storage data gets corrupted
-        }
-    }
-
-    private async void HandleStateChanged()
-    {
-        RefreshTasksList();
-        await InvokeAsync(StateHasChanged);
-    }
-
-    public void Dispose()
-    {
-        TaskService.OnChange -= HandleStateChanged;
-    }
-} *@
