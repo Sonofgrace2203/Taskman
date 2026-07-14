@@ -8,6 +8,21 @@
     background: rgba(0, 0, 0, 0.7);
 }
 
+@keyframes slideInLeft-b-hstvr9o8e2 {
+    from {
+        transform: translateX(-100);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-left[b-hstvr9o8e2] {
+    animation: slideInLeft-b-hstvr9o8e2 1s ease-in-out forwards;
+}
+
 .notify-in[b-hstvr9o8e2] {
     display: flex;
     align-items: center;
