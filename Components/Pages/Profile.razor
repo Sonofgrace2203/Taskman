@@ -30,7 +30,7 @@ else
 
     <div style="background: rgb(255, 166, 0, 0.2); padding: 20px 40px; font-size: 20px; margin-top: 30px; flex-wrap: wrap;">
         <div
-            style="background: rgb(255, 166, 0, 0.2); padding: 5px 10px; font-size: 20px; display: flex; justify-content: space-between; margin-top: 30px; flex-wrap: wrap;">
+            style="background: rgb(255, 166, 0, 0.2); padding: 20px 40px; font-size: 20px; display: flex; justify-content: space-between; margin-top: 30px; flex-wrap: wrap;">
             <p>
                 <b style="color: purple;">🙎‍♂️ Fullname:</b>
                 @fullName
@@ -48,7 +48,7 @@ else
             </p>
         </div>
         <div
-            style="background: rgb(255, 166, 0, 0.2); padding: 5px 10px; font-size: 20px; display: flex; justify-content: space-between; margin-top: 30px; flex-wrap: wrap;">
+            style="background: rgb(255, 166, 0, 0.2); padding: 20px 40px; font-size: 20px; display: flex; justify-content: space-between; margin-top: 30px; flex-wrap: wrap;">
             <p>
                 <b style="color: purple;">🏷️ Role:</b>
                 @Auth.Role
@@ -100,14 +100,9 @@ else
             </div>
             @if (confirmAccountDelete == false)
             {
-                <div style="display: flex; gap:10px;">
-                    <div style="margin-bottom: 10px;">
-                        <ButtonCard BgColor="rgba(255, 0, 0, 0.3)" BtnText="✅ Confirm" OnClick="DeleteUserAccount" />
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <ButtonCard BgColor="rgb(126, 126, 126, 0.3)" BtnText="❌ Cancel"
-                                    OnClick="() => confirmAccountDelete = true" />
-                    </div>
+                <div>
+                    <Confirm Title="Sure to delete this account?" Text1="✅ Confirm" Text2="❌ Cancel" ConfirmBtn="DeleteUserAccount"
+                             CancelBtn="() => confirmAccountDelete = true" />
                 </div>
             }
             else
@@ -126,8 +121,6 @@ else
     private bool isLoading { get; set; }
     private List<AppTask> tasks => TaskService.GetAll() ?? new List<AppTask>();
     private string tasksCount => tasks.Count.ToString();
-
-    // Replace 'IsCompleted' with the exact property name inside your AppTask model:
     private string completedCount => tasks.Count(t => t.IsComplete).ToString();
     private string pendingCount => tasks.Count(t => !t.IsComplete).ToString();
 
@@ -147,7 +140,7 @@ else
 
     private void BackToDashboard()
     {
-        Nav.NavigateTo("dashboard");
+        Nav.NavigateTo("/dashboard");
         StateHasChanged();
     }
 
@@ -159,7 +152,7 @@ else
 
     private void Logout()
     {
-        Nav.NavigateTo("/Taskman");
+        Nav.NavigateTo("/");
         Auth.Logout();
     }
 

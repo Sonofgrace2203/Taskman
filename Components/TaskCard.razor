@@ -4,7 +4,8 @@
         <td class="td1">
             <div @onclick="() => OnToggle.InvokeAsync(Task.Id)" class="container-title">
                 <p>
-                    <input style="user-select: none; pointer-events: none;" type="checkbox" checked="@Task.IsComplete" @onclick:stopPropagation="true" />
+                    <input style="user-select: none; pointer-events: none;" type="checkbox" checked="@Task.IsComplete"
+                           @onclick:stopPropagation="true" />
                 </p>
 
                 <p>@Task.Title</p>
@@ -37,16 +38,16 @@
                 <button @onclick="() => OnRequestDelete.InvokeAsync(Task.Id)">🗑️</button>
             }
             else
-            {
-                <div style="width: 200px; margin-left: 5px; transition: 0.3s ease-in">
-                    <button style="font-size: 12px; margin-right: 10px;" @onclick="() => OnDelete.InvokeAsync(Task.Id)">✅
-                        Confirm</button>
-                        <button style="font-size: 12px;" @onclick="() => OnRequestDelete.InvokeAsync(-1)">❌ Cancel</button>
-                    </div>
-                }
-            </td>
-        </tr>
-    </table>
+            {            
+                <div>
+                    <Confirm Title="Sure to delete this task?" Text1="✅ Delete" Text2="❌ Cancel"
+                             ConfirmBtn="() => OnDelete.InvokeAsync(Task.Id)"
+                             CancelBtn="() => OnRequestDelete.InvokeAsync(-1)" />
+                </div>
+            }
+        </td>
+    </tr>
+</table>
 
 @code {
     [Parameter] public int? TaskIdToDelete { get; set; } = null;

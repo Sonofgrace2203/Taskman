@@ -1,0 +1,33 @@
+<div class="notify">
+    <div class="notify-in">
+        <div class="notify-inner">
+            <p style="padding: 20px;">@Title</p>
+            <div style="display: flex; justify-content: space-around; padding: 20px;">
+                <button
+                style="background: rgb(135, 0, 135, 0.3); padding: 10px 20px; border: none; border-radius: 10px; margin-right:20px"
+                @onclick="HandleConfirm">@Text1</button>
+                <button
+                style="background: rgb(131, 131, 131, 0.3); padding: 10px 20px; border: none; border-radius: 10px;"
+                @onclick="HandleCancel">@Text2</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string Text1 { get; set; } = "";
+    [Parameter] public string Text2 { get; set; } = "";
+    [Parameter] public EventCallback ConfirmBtn { get; set; }
+    [Parameter] public EventCallback CancelBtn { get; set; }
+
+    private async Task HandleConfirm()
+    {
+        await ConfirmBtn.InvokeAsync();
+    }
+
+    private async Task HandleCancel()
+    {
+        await CancelBtn.InvokeAsync();
+    }
+}

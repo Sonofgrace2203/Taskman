@@ -106,14 +106,14 @@
                     <p style="margin:10px 0; color: red;">🔍 No task(s) found.</p>
                 }
 
-                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; padding-top: 10px;">
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; padding-top: 10px; margin-top: 40px;">
                     <h4>📁 Available Task</h4>
                     @if (confirmClear)
                     {
-                        <div style="display: flex; gap:10px;">
-                            <ButtonCard BgColor="rgb(140, 0, 140, 0.3)" BtnText="✅ Clear" OnClick="ClearTask" />
-                            <ButtonCard BgColor="rgb(126, 126, 126, 0.3)" BtnText="❌ Cancel" OnClick="() => confirmClear = false" />
+                        <div>
+                            <Confirm Title="Sure to clear all tasks?" Text1="✅ Clear" Text2="❌ Cancel" ConfirmBtn="ClearTask" CancelBtn="() => confirmClear = false" />
                         </div>
+                        
                     }
                     else
                     {
@@ -136,21 +136,7 @@
                                 {
                                     @if (activeNotifyTaskId == task.Id)
                                     {
-                                        <div class="notify">
-                                            <div class="notify-in">
-                                                <div class="notify-inner">
-                                                    <p style="padding: 20px;">Confirm to complete this task.</p>
-                                                    <div style="display: flex; justify-content: space-around; padding: 20px;">
-                                                        <button
-                                                        style="background: rgb(135, 0, 135, 0.3); padding: 10px 20px; border: none; border-radius: 10px;"
-                                                        @onclick="() => CompleteTask(task.Id)">Confirm</button>
-                                                        <button
-                                                        style="background: rgb(131, 131, 131, 0.3); padding: 10px 20px; border: none; border-radius: 10px;"
-                                                        @onclick="() => activeNotifyTaskId = null">Cancel</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <Confirm Title="Confirm to complete this task." Text1="✅ Confirm" Text2="❌ Cancel" ConfirmBtn="() => CompleteTask(task.Id)" CancelBtn="() => activeNotifyTaskId = null" />
                                     }
                                     else if (task.IsComplete)
                                     {
