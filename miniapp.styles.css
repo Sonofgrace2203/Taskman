@@ -1,3 +1,27 @@
+/* /Components/Confirm.razor.rz.scp.css */
+.notify[b-hstvr9o8e2] {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.notify-in[b-hstvr9o8e2] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.notify .notify-inner[b-hstvr9o8e2] {
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+}
 /* /Components/NavBar.razor.rz.scp.css */
 nav[b-4iub4don6c] {
     display: flex;
@@ -295,6 +319,14 @@ input:focus[b-t5dwqe0v9t] {
     border: none;
 }
 
+select:focus[b-t5dwqe0v9t] {
+    outline: none;
+    background-color: rgb(121, 0, 121, 0.1);
+    border-radius: 10px;
+    padding: 10px 20px;
+    border: none;
+}
+
 .disabled-container[b-t5dwqe0v9t] {
     pointer-events: none;
     opacity: 0.4;
@@ -308,31 +340,6 @@ input:focus[b-t5dwqe0v9t] {
     left: 0;
     right: 0;
     background: rgb(0, 0, 0, 0.3);
-}
-
-.notify[b-t5dwqe0v9t] {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.notify-in[b-t5dwqe0v9t] {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-}
-
-.notify .notify-inner[b-t5dwqe0v9t] {
-    text-align: center;
-    width: 25%;
-    background: white;
-    border-radius: 10px;
-    padding: 10px;
 }
 
 .btn-li[b-t5dwqe0v9t] {
