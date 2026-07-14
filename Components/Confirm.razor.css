@@ -7,6 +7,21 @@
     background: rgba(0, 0, 0, 0.7);
 }
 
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-left {
+    animation: slideInLeft 1s ease-in-out forwards;
+}
+
 .notify-in {
     display: flex;
     align-items: center;

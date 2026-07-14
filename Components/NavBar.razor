@@ -17,8 +17,10 @@
                      Match="NavLinkMatch.All">👤 Profile</NavLink>
         </div>
     }
-    <p style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
-       Match="NavLinkMatch.All">👤 @Auth.Username 🏷️ @Auth.Role</p>
+    <div class="mobile">
+        <p style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
+           Match="NavLinkMatch.All">👤 @Auth.Username 🏷️ @Auth.Role</p>
+    </div>
     @if (Auth.IsLoggedIn)
     {
         <div class="mobile">
