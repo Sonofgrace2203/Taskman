@@ -37,6 +37,14 @@
     border-radius: 10px;
     padding: 10px;
 }
+
+.notify p[b-hstvr9o8e2] {
+    font-size: 15px;
+}
+
+.notify button[b-hstvr9o8e2] {
+    font-size: 15px;
+}
 /* /Components/NavBar.razor.rz.scp.css */
 nav[b-4iub4don6c] {
     display: flex;
