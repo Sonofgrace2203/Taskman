@@ -52,9 +52,16 @@ namespace miniapp.Services
             ConfirmPassword = confirmPassword;
             Role = role;
 
-            if (password != confirmPassword)
+            if (firstname == "" || lastname == "" || email == "" || role == "" || dateOfBirth == null || username == "" || password == "" || confirmPassword == "")
             {
-                return "Passwords do not match.";
+                if (password != confirmPassword)
+                {
+                    return "Passwords do not match.";
+                }
+                else
+                {
+                    return "Please fill all required entries.";
+                }
             }
 
             userExists = users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
@@ -81,13 +88,11 @@ namespace miniapp.Services
             return "Success";
         }
 
-
-
         public bool Login(string username, string password)
         {
             var user = users.FirstOrDefault(u => u.Username == username && u.Password == password);
 
-            if (user == null)
+            if (username == "" && password == "")
             {
                 IsLoggedIn = false;
                 return false;
@@ -141,39 +146,21 @@ namespace miniapp.Services
             loaded = true;
         }
 
-        // public async Task DeleteAccount()
-        // {
-        //     foreach (var user in users)
-        //     {
-        //         await JS.InvokeAsync<string>("localStorage.removeItem", user);
-        //     }
-
-        //     await JS.InvokeAsync<string>("localStorage.removeItem", "All_Users");
-
-        //     await SaveUser();
-        //     await LoadUsers();
-        // }
-
         public async Task DeleteAccount()
         {
-            // 1. Ensure the user is actually logged in
             if (!IsLoggedIn) return;
 
-            // 2. Remove the current user from the in-memory list
             var userToRemove = users.FirstOrDefault(u => u.Username.Equals(Username, StringComparison.OrdinalIgnoreCase));
             if (userToRemove != null)
             {
                 users.Remove(userToRemove);
             }
 
-            // 3. Save the modified list back to localStorage (overwriting the old one)
             var jsonString = JsonSerializer.Serialize(users);
             await JS.InvokeVoidAsync("localStorage.setItem", "All_Users", jsonString);
 
-            // 4. Log the user out of the application
             Logout();
         }
-
     }
 }
 

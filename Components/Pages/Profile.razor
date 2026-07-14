@@ -140,7 +140,7 @@ else
 
     private void BackToDashboard()
     {
-        Nav.NavigateTo("/dashboard");
+        Nav.NavigateTo("dashboard");
         StateHasChanged();
     }
 
@@ -152,7 +152,7 @@ else
 
     private void Logout()
     {
-        Nav.NavigateTo("/");
+        Nav.NavigateTo("/Taskman");
         Auth.Logout();
     }
 
