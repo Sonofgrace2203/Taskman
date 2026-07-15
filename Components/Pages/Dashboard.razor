@@ -1,5 +1,5 @@
 @page "/dashboard"
-@using miniapp.Components
+@using Taskman.Components
 @inject miniapp.Services.AuthService Auth
 @inject ITaskService TaskService
 @inject NavigationManager Nav
@@ -68,7 +68,7 @@ else
         if (isLoading)
         {
             isLoading = true;
-            await Task.Delay(1500);
+            await Task.Delay(500);
             isLoading = false;
         }
     }
