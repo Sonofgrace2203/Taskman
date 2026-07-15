@@ -18,13 +18,13 @@
         </div>
     }
     <div class="mobile">
-        <p style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
+        <p style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;"
            Match="NavLinkMatch.All">👤 @Auth.Username 🏷️ @Auth.Role</p>
     </div>
     @if (Auth.IsLoggedIn)
     {
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/Taskman"
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/"
                      @onclick="LogoutUser" Match="NavLinkMatch.All">
                 <ButtonCard BgColor="white" BtnText="⌫ Logout" OnClick="LogoutUser" />
             </NavLink>
@@ -33,7 +33,7 @@
     else
     {
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/Taskman"
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/"
                      @onclick="LogoutUser" Match="NavLinkMatch.All">
                 <ButtonCard BgColor="white" BtnText="🚪 Login" OnClick="LoginUser" />
             </NavLink>

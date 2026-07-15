@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+
+    <CompressionEnabled>false</CompressionEnabled>
+    <BlazorEnableCompression>false</BlazorEnableCompression>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,4 +20,5 @@
     <Content Remove="android/**" />
     <None Remove="android/**" />
   </ItemGroup>
+
 </Project>
