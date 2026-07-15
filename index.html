@@ -5,8 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>miniapp</title>
-    <base href="/Taskman/" />
-    <link href="_framework/dotnet.9m7csiq0xm.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-b4qZOU49YAezD7MuDx/ExheGyWunSmpKVd7Ro73m3gI=" />
+    <script>
+        if (window.location.hostname === "sonofgrace2203.github.io") {
+            document.write('<base href="/Taskman/">');
+        } else {
+            document.write('<base href="/">');
+        }
+    </script>
+    <link href="_framework/dotnet.4ggab2jkf5.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-PCurVR8BgIL4g9kZVp5rgkK+dYOSvRNxfSB1c+WAid4=" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -14,7 +20,7 @@
     <script type="importmap">{
   "imports": {
     "./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.66stpp682q.js",
-    "./_framework/dotnet.js": "./_framework/dotnet.9m7csiq0xm.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.4ggab2jkf5.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.puryxhmhq9.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.web2r9gqbh.js"
   },
@@ -22,8 +28,8 @@
   "integrity": {
     "./_framework/blazor.webassembly.66stpp682q.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
     "./_framework/blazor.webassembly.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
-    "./_framework/dotnet.9m7csiq0xm.js": "sha256-b4qZOU49YAezD7MuDx/ExheGyWunSmpKVd7Ro73m3gI=",
-    "./_framework/dotnet.js": "sha256-b4qZOU49YAezD7MuDx/ExheGyWunSmpKVd7Ro73m3gI=",
+    "./_framework/dotnet.4ggab2jkf5.js": "sha256-PCurVR8BgIL4g9kZVp5rgkK+dYOSvRNxfSB1c+WAid4=",
+    "./_framework/dotnet.js": "sha256-PCurVR8BgIL4g9kZVp5rgkK+dYOSvRNxfSB1c+WAid4=",
     "./_framework/dotnet.native.js": "sha256-gQbHHzCnWx8iDOC65EKbql7bEltJkfao7lmkAbIRajw=",
     "./_framework/dotnet.native.puryxhmhq9.js": "sha256-gQbHHzCnWx8iDOC65EKbql7bEltJkfao7lmkAbIRajw=",
     "./_framework/dotnet.runtime.js": "sha256-SOUHEQ3FhDAibBSR2u90NWZpoBjPuWRmH0BAATUlhJU=",
