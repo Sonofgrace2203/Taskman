@@ -1,5 +1,5 @@
 @page "/profile"
-@using miniapp.Components
+@using Taskman.Components
 @inject miniapp.Services.AuthService Auth
 @inject ITaskService TaskService
 @inject NavigationManager Nav
@@ -133,7 +133,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
-        await Task.Delay(2000);
+        await Task.Delay(500);
         isLoading = false;
         StateHasChanged();
     }
