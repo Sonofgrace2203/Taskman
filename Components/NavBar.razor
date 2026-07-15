@@ -24,7 +24,7 @@
     @if (Auth.IsLoggedIn)
     {
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/"
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
                      @onclick="LogoutUser" Match="NavLinkMatch.All">
                 <ButtonCard BgColor="white" BtnText="⌫ Logout" OnClick="LogoutUser" />
             </NavLink>
@@ -33,7 +33,7 @@
     else
     {
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="/"
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
                      @onclick="LogoutUser" Match="NavLinkMatch.All">
                 <ButtonCard BgColor="white" BtnText="🚪 Login" OnClick="LoginUser" />
             </NavLink>
@@ -44,12 +44,12 @@
 @code {
     private void LoginUser()
     {
-        Nav.NavigateTo("/Taskman");
+        Nav.NavigateTo("");
     }
 
     private void LogoutUser()
     {
         Auth.Logout();
-        Nav.NavigateTo("/Taskman");
+        Nav.NavigateTo("");
     }
 }
