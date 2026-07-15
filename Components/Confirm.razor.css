@@ -19,7 +19,7 @@
 }
 
 .slide-in-left {
-    animation: slideInLeft 1s ease-in-out forwards;
+    animation: slideInLeft 0.4s ease-in-out forwards;
 }
 
 .notify-in {

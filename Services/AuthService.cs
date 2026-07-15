@@ -90,9 +90,17 @@ namespace miniapp.Services
 
         public bool Login(string username, string password)
         {
-            var user = users.FirstOrDefault(u => u.Username == username && u.Password == password);
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                IsLoggedIn = false;
+                return false;
+            }
 
-            if (username == "" && password == "")
+            var user = users.FirstOrDefault(u =>
+                u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)
+                && u.Password == password);
+
+            if (user == null)
             {
                 IsLoggedIn = false;
                 return false;
@@ -163,4 +171,3 @@ namespace miniapp.Services
         }
     }
 }
-
