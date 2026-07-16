@@ -2,17 +2,17 @@
 @inject NavigationManager Nav
 
 <div class="mobile-menu">
-    <div style="background: orange; padding: 5px 10px;">
+    <div style="background: purple; padding: 5px 10px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center;">
+            <div style="display: flex; align-items: center;" @onclick='() => Nav.NavigateTo("")'>
                 <img src="favicon.png" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
                 <div style="display: flex; margin-top: 10px;">
                     <h3 style="color: white;">Tasks</h3>
-                    <h3 style="color: purple;">Man</h3>
+                    <h3 style="color: orange;">Man</h3>
                 </div>
             </div>
-            <button style="background: none; border: none;" @onclick="ShowMenu">
-                <img src="menu.svg" alt="" style="font-size: 30px; color: white;">
+            <button style="background: none; border: none; color: white;" @onclick="ShowMenu">
+                <img src="menupng.png" alt="" style="width: 30px; height: 30px; color: white;">
             </button>
         </div>
     </div>
