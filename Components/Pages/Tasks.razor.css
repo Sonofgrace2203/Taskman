@@ -10,6 +10,7 @@
 
     .mobile .i i {
         font-size: 15px;
+        margin-top: 20px;;
     }
 
     li {
@@ -77,4 +78,25 @@ select:focus {
     background: none;
     border: none;
     margin-bottom: 5px;
+}
+
+.slide-from-top {
+    animation: slideFromTop 0.8s cubic-bezier(.175, .885, .32, 1.275) forwards;
+}
+
+@keyframes slideFromTop {
+    0% {
+        transform: translateY(-120px);
+        opacity: 0;
+    }
+
+    70% {
+        transform: translateY(10px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using Microsoft.JSInterop;
 
-namespace miniapp.Services
+namespace Taskman.Services
 {
     public class AuthService
     {

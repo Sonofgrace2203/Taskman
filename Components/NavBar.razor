@@ -1,47 +1,117 @@
-@inject miniapp.Services.AuthService Auth
+@inject Taskman.Services.AuthService Auth
 @inject NavigationManager Nav
 
-<nav style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-    <div class="mobile">
-        <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="dashboard"
-                 Match="NavLinkMatch.All">🏠 Home</NavLink>
+<div class="mobile-menu">
+    <div style="background: orange; padding: 5px 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center;">
+                <img src="favicon.png" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
+                <div style="display: flex; margin-top: 10px;">
+                    <h3 style="color: white;">Tasks</h3>
+                    <h3 style="color: purple;">Man</h3>
+                </div>
+            </div>
+            <button style="background: none; border: none;" @onclick="ShowMenu">
+                <img src="menu.svg" alt="" style="font-size: 30px; color: white;">
+            </button>
+        </div>
     </div>
-    @if (Auth.Role == "Admin")
-    {
+</div>
+
+<div class="mobile-nav">
+    <nav style="display: flex; justify-content: space-around; margin-bottom: 20px;">
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="tasks"
-                     Match="NavLinkMatch.All">📝 Tasks</NavLink>
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="dashboard"
+                     Match="NavLinkMatch.All">🏠 Home</NavLink>
         </div>
+        @if (Auth.Role == "Admin")
+        {
+            <div class="mobile">
+                <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="tasks"
+                         Match="NavLinkMatch.All">📝 Tasks</NavLink>
+            </div>
+            <div class="mobile">
+                <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="profile"
+                         Match="NavLinkMatch.All">👤 Profile</NavLink>
+            </div>
+        }
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="profile"
-                     Match="NavLinkMatch.All">👤 Profile</NavLink>
-        </div>
-    }
-    <div class="mobile">
-        <p style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;"
-           Match="NavLinkMatch.All">👤 @Auth.Username 🏷️ @Auth.Role</p>
+            <p style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;"
+               Match="NavLinkMatch.All">👤
+                @Auth.Username 🏷️ @Auth.Role</p>
+            </div>
+            @if (Auth.IsLoggedIn)
+            {
+                <div class="mobile">
+                    <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
+                             @onclick="LogoutUser" Match="NavLinkMatch.All">
+                        <ButtonCard BgColor="white" BtnText="⌫ Logout" OnClick="LogoutUser" />
+                    </NavLink>
+                </div>
+            }
+            else
+            {
+                <div class="mobile">
+                    <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
+                             @onclick="LogoutUser" Match="NavLinkMatch.All">
+                        <ButtonCard BgColor="white" BtnText="🚪 Login" OnClick="LoginUser" />
+                    </NavLink>
+                </div>
+            }
+        </nav>
     </div>
-    @if (Auth.IsLoggedIn)
-    {
+
+<div class="mobile-nav slide-from-top" style="display: @(showMenu ? "block" : "none");">
+    <nav style="display: flex; justify-content: space-around; margin-bottom: 20px;">
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
-                     @onclick="LogoutUser" Match="NavLinkMatch.All">
-                <ButtonCard BgColor="white" BtnText="⌫ Logout" OnClick="LogoutUser" />
-            </NavLink>
+            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="dashboard"
+                     Match="NavLinkMatch.All">🏠 Home</NavLink>
         </div>
-    }
-    else
-    {
+        @if (Auth.Role == "Admin")
+        {
+            <div class="mobile">
+                <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="tasks"
+                         Match="NavLinkMatch.All">📝 Tasks</NavLink>
+            </div>
+            <div class="mobile">
+                <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="profile"
+                         Match="NavLinkMatch.All">👤 Profile</NavLink>
+            </div>
+        }
         <div class="mobile">
-            <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
-                     @onclick="LogoutUser" Match="NavLinkMatch.All">
-                <ButtonCard BgColor="white" BtnText="🚪 Login" OnClick="LoginUser" />
-            </NavLink>
-        </div>
-    }
-</nav>
+            <p style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;"
+               Match="NavLinkMatch.All">👤
+                @Auth.Username 🏷️ @Auth.Role</p>
+            </div>
+            @if (Auth.IsLoggedIn)
+            {
+                <div class="mobile">
+                    <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
+                             @onclick="LogoutUser" Match="NavLinkMatch.All">
+                        <ButtonCard BgColor="white" BtnText="⌫ Logout" OnClick="LogoutUser" />
+                    </NavLink>
+                </div>
+            }
+            else
+            {
+                <div class="mobile">
+                    <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href=""
+                             @onclick="LogoutUser" Match="NavLinkMatch.All">
+                        <ButtonCard BgColor="white" BtnText="🚪 Login" OnClick="LoginUser" />
+                    </NavLink>
+                </div>
+            }
+        </nav>
+    </div>
 
 @code {
+    private bool showMenu = false;
+
+    private void ShowMenu()
+    {
+        showMenu = !showMenu;
+    }
+
     private void LoginUser()
     {
         Nav.NavigateTo("");

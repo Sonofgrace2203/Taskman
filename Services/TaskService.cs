@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.JSInterop;
 using Microsoft.VisualBasic;
-using miniapp.Components.Pages;
+using Taskman.Components.Pages;
 
 public class TaskService : ITaskService
 {

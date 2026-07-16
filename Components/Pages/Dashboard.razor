@@ -1,6 +1,6 @@
 @page "/dashboard"
 @using Taskman.Components
-@inject miniapp.Services.AuthService Auth
+@inject Taskman.Services.AuthService Auth
 @inject ITaskService TaskService
 @inject NavigationManager Nav
 
@@ -12,7 +12,7 @@
 }
 else
 {
-    <div>
+    <div style="margin-top: 20px;">
         <h3>📊 Dashboard</h3>
         <p>Welcome back, @Auth.Username 🖐️</p>
 

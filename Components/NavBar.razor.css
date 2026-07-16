@@ -7,7 +7,7 @@ nav {
     color: white;
 }
 
-@media (min-width: 300px) and (max-width: 700px) {
+@media (min-width: 150px) and (max-width: 700px) {
     nav {
         display: flex;
         flex-direction: column;
@@ -20,6 +20,20 @@ nav {
 
     .mobile {
         margin: 10px 0;
+    }
+
+    .mobile-nav {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: block;
+    }
+}
+
+@media (min-width: 701px) {
+    .mobile-menu {
+        display: none;
     }
 }
 
@@ -54,4 +68,25 @@ nav .nav-item:hover {
     color: white;
     font-weight: bold;
     font-size: 15px;
+}
+
+.slide-from-top {
+    animation: slideFromTop 0.8s cubic-bezier(.175, .885, .32, 1.275) forwards;
+}
+
+@keyframes slideFromTop {
+    0% {
+        transform: translateY(-120px);
+        opacity: 0;
+    }
+
+    70% {
+        transform: translateY(10px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
