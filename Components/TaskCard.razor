@@ -33,18 +33,7 @@
                 }
                 @Task.Priority
             </button>
-            @if (TaskIdToDelete != Task.Id)
-            {
-                <button @onclick="() => OnRequestDelete.InvokeAsync(Task.Id)">🗑️</button>
-            }
-            else
-            {            
-                <div>
-                    <Confirm Title="Sure to delete this task?" Text1="✅ Delete" Text2="❌ Cancel"
-                             ConfirmBtn="() => OnDelete.InvokeAsync(Task.Id)"
-                             CancelBtn="() => OnRequestDelete.InvokeAsync(-1)" />
-                </div>
-            }
+            <button @onclick="() => OnRequestDelete.InvokeAsync(Task.Id)">🗑️</button>
         </td>
     </tr>
 </table>

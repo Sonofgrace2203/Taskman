@@ -111,9 +111,10 @@
                     @if (confirmClear)
                     {
                         <div>
-                            <Confirm Title="Sure to clear all tasks?" Text1="✅ Clear" Text2="❌ Cancel" ConfirmBtn="ClearTask" CancelBtn="() => confirmClear = false" />
+                            <Confirm Title="Sure to clear all tasks?" Text1="✅ Clear" Text2="❌ Cancel" ConfirmBtn="ClearTask"
+                                     CancelBtn="() => confirmClear = false" />
                         </div>
-                        
+
                     }
                     else
                     {
@@ -136,7 +137,8 @@
                                 {
                                     @if (activeNotifyTaskId == task.Id)
                                     {
-                                        <Confirm Title="Confirm to complete this task." Text1="✅ Confirm" Text2="❌ Cancel" ConfirmBtn="() => CompleteTask(task.Id)" CancelBtn="() => activeNotifyTaskId = null" />
+                                        <Confirm Title="Confirm to complete this task." Text1="✅ Confirm" Text2="❌ Cancel"
+                                                 ConfirmBtn="() => CompleteTask(task.Id)" CancelBtn="() => activeNotifyTaskId = null" />
                                     }
                                     else if (task.IsComplete)
                                     {
@@ -177,6 +179,13 @@
                 }
             }
 
+            @if (taskIdToDelete != null)
+            {
+                <Confirm Title="Sure to delete this task?" Text1="✅ Delete" Text2="❌ Cancel"
+                         ConfirmBtn="() => DeleteTask(taskIdToDelete.Value)" CancelBtn="() => taskIdToDelete = null" />
+            }
+
+
 @code {
     private string taskTitle = "";
     private string searchTask = "";
@@ -200,6 +209,25 @@
 
     private int? activeNotifyTaskId;
 
+    private void ShowDeleteDialog(int id)
+    {
+        taskIdToDelete = id;
+    }
+
+    private void HideDeleteDialog()
+    {
+        taskIdToDelete = -1;
+    }
+
+    private async Task DeleteSelectedTask()
+    {
+        if (taskIdToDelete.HasValue)
+        {
+            await DeleteTask(taskIdToDelete.Value);
+            taskIdToDelete = null;
+        }
+    }
+
     private async Task CompleteTask(int id)
     {
         await TaskService.ToggleCompleted(id);
@@ -209,16 +237,7 @@
 
     private void ShowDeleteConfirmation(int id)
     {
-        if (id == -1)
-        {
-            taskIdToDelete = null;
-            return;
-        }
-
-        if (taskIdToDelete == id)
-            taskIdToDelete = null;
-        else
-            taskIdToDelete = id;
+        taskIdToDelete = id;
     }
 
     private IEnumerable<AppTask> FilteredItems
@@ -319,7 +338,7 @@
         {
             await SaveTask();
         }
-    } 
+    }
 
     private void AllTasks()
     {
