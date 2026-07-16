@@ -12,7 +12,7 @@
             document.write('<base href="/">');
         }
     </script>
-    <link href="_framework/dotnet.9r3kmkkfz9.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-BfZQFqNJs1owE1miuGV7UqO5m6r1lstuOWnRb9EEAVM=" />
+    <link href="_framework/dotnet.fwl4u4kv6o.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-IUrkpr8iUOWChXg6ZrHDMUwgPOxL5Ju7634DZY4N6x4=" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -20,7 +20,7 @@
     <script type="importmap">{
   "imports": {
     "./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.66stpp682q.js",
-    "./_framework/dotnet.js": "./_framework/dotnet.9r3kmkkfz9.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.fwl4u4kv6o.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.puryxhmhq9.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.web2r9gqbh.js"
   },
@@ -28,8 +28,8 @@
   "integrity": {
     "./_framework/blazor.webassembly.66stpp682q.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
     "./_framework/blazor.webassembly.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
-    "./_framework/dotnet.9r3kmkkfz9.js": "sha256-BfZQFqNJs1owE1miuGV7UqO5m6r1lstuOWnRb9EEAVM=",
-    "./_framework/dotnet.js": "sha256-BfZQFqNJs1owE1miuGV7UqO5m6r1lstuOWnRb9EEAVM=",
+    "./_framework/dotnet.fwl4u4kv6o.js": "sha256-IUrkpr8iUOWChXg6ZrHDMUwgPOxL5Ju7634DZY4N6x4=",
+    "./_framework/dotnet.js": "sha256-IUrkpr8iUOWChXg6ZrHDMUwgPOxL5Ju7634DZY4N6x4=",
     "./_framework/dotnet.native.js": "sha256-gQbHHzCnWx8iDOC65EKbql7bEltJkfao7lmkAbIRajw=",
     "./_framework/dotnet.native.puryxhmhq9.js": "sha256-gQbHHzCnWx8iDOC65EKbql7bEltJkfao7lmkAbIRajw=",
     "./_framework/dotnet.runtime.js": "sha256-SOUHEQ3FhDAibBSR2u90NWZpoBjPuWRmH0BAATUlhJU=",
@@ -67,6 +67,17 @@
         <span class="dismiss">🗙</span>
     </div>
     <script src="_framework/blazor.webassembly.66stpp682q.js"></script>
+    <script type="module">
+        import { SplashScreen } from '@capacitor/splash-screen';
+
+        window.addEventListener("load", async () => {
+            try {
+                await SplashScreen.hide();
+            } catch (e) {
+                console.log(e);
+            }
+        });
+    </script>
 </body>
 
 </html>
