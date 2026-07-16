@@ -5,14 +5,14 @@
     <div style="background: purple; padding: 5px 10px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center;" @onclick='() => Nav.NavigateTo("")'>
-                <img src="favicon.png" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
+                <img src="favicon.png" alt="" style="width: 30px; height: 30px; margin-right: 5px; border-radius: 5px;">
                 <div style="display: flex; margin-top: 10px;">
                     <h3 style="color: white;">Tasks</h3>
                     <h3 style="color: orange;">Man</h3>
                 </div>
             </div>
-            <button style="background: none; border: none; color: white;" @onclick="ShowMenu">
-                <img src="menupng.png" alt="" style="width: 30px; height: 30px; color: white;">
+            <button style="background: none; border: none;" @onclick="ShowMenu">
+                <img src="menu.png" alt="" style="width: 30px; height: 30px; border: 2px solid white; border-radius: 50%; color: color: white;">
             </button>
         </div>
     </div>
@@ -62,7 +62,7 @@
     </div>
 
 <div class="mobile-nav slide-from-top" style="display: @(showMenu ? "block" : "none");">
-    <nav style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+    <nav style="display: flex; justify-content: space-around;">
         <div class="mobile">
             <NavLink style="text-decoration: none; color: white; font-weight: bold; font-size: 15px;" href="dashboard"
                      Match="NavLinkMatch.All">🏠 Home</NavLink>
