@@ -1,0 +1,20 @@
+:root{
+
+--primary:#6D28D9;
+--secondary:#F97316;
+--white:#FFFFFF;
+
+--background:#F8F7FD;
+
+--success:#16A34A;
+
+--danger:#DC2626;
+
+--warning:#F59E0B;
+
+}
+
+body {
+    font-family: Poppins;
+    font-weight: 500;
+}

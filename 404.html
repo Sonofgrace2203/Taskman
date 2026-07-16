@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>miniapp</title>
+    <title>Taskman</title>
     <script>
         if (window.location.hostname === "sonofgrace2203.github.io") {
             document.write('<base href="/Taskman/">');
@@ -12,15 +12,15 @@
             document.write('<base href="/">');
         }
     </script>
-    <link href="_framework/dotnet.kfhut7nnrv.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-wJzAcCuvljZfImMKOIRpK0Q+wJBuQ/WMNsGJr4eygUQ=" />
+    <link href="_framework/dotnet.9r3kmkkfz9.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-BfZQFqNJs1owE1miuGV7UqO5m6r1lstuOWnRb9EEAVM=" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <link href="miniapp.styles.css" rel="stylesheet" />
+    <link href="Taskman.styles.css" rel="stylesheet" />
     <script type="importmap">{
   "imports": {
     "./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.66stpp682q.js",
-    "./_framework/dotnet.js": "./_framework/dotnet.kfhut7nnrv.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.9r3kmkkfz9.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.puryxhmhq9.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.web2r9gqbh.js"
   },
@@ -28,8 +28,8 @@
   "integrity": {
     "./_framework/blazor.webassembly.66stpp682q.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
     "./_framework/blazor.webassembly.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
-    "./_framework/dotnet.js": "sha256-wJzAcCuvljZfImMKOIRpK0Q+wJBuQ/WMNsGJr4eygUQ=",
-    "./_framework/dotnet.kfhut7nnrv.js": "sha256-wJzAcCuvljZfImMKOIRpK0Q+wJBuQ/WMNsGJr4eygUQ=",
+    "./_framework/dotnet.9r3kmkkfz9.js": "sha256-BfZQFqNJs1owE1miuGV7UqO5m6r1lstuOWnRb9EEAVM=",
+    "./_framework/dotnet.js": "sha256-BfZQFqNJs1owE1miuGV7UqO5m6r1lstuOWnRb9EEAVM=",
     "./_framework/dotnet.native.js": "sha256-gQbHHzCnWx8iDOC65EKbql7bEltJkfao7lmkAbIRajw=",
     "./_framework/dotnet.native.puryxhmhq9.js": "sha256-gQbHHzCnWx8iDOC65EKbql7bEltJkfao7lmkAbIRajw=",
     "./_framework/dotnet.runtime.js": "sha256-SOUHEQ3FhDAibBSR2u90NWZpoBjPuWRmH0BAATUlhJU=",
@@ -40,11 +40,25 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div style="position: fixed; inset: 0;">
+            <div class="loading-progress"
+                style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100vh; gap:20px;">
+
+                <img src="favicon.png" alt="TaskMan Logo" width="120"
+                    style=".slide-from-top {animation: slideFromTop 0.8s cubic-bezier(.175, .885, .32, 1.275) forwards;}
+                @keyframes slideFromTop { 0% {transform: translateY(-120px); opacity: 0;} 70% {transform: translateY(10px); opacity: 1;} 100% {transform: translateY(0);opacity: 1;}}" />
+
+                <svg width="220" height="6" viewBox="0 0 220 6">
+                    <!-- Background -->
+                    <rect x="0" y="0" width="220" height="6" rx="3" fill="#E9D5FF" />
+
+                    <!-- Animated Progress -->
+                    <rect class="loading-progress-text" x="0" y="0" width="60" height="6" rx="3" fill="#F97316">
+                        <animate attributeName="x" from="-60" to="220" dur="1.2s" repeatCount="indefinite" />
+                    </rect>
+                </svg>
+            </div>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
